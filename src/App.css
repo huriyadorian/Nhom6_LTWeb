@@ -1,0 +1,127 @@
+/* Account Modal Styles */
+.custom-account-box {
+	background: rgba(35,35,41,0.95);
+	border-radius: 10px;
+	box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37), 0 0 16px 2px #fff2;
+	padding: 0 0 10px 0;
+	min-width: 320px;
+	max-width: 90vw;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	top: 80px;
+	color: #fff;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	border: 1.5px solid rgba(255,255,255,0.18);
+	font-size: 1.15rem;
+	overflow: hidden;
+}
+
+.custom-account-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-size: 1.25rem;
+	font-weight: 500;
+	background: rgba(30,30,30,0.95);
+	padding: 12px 18px 8px 18px;
+	border-radius: 10px 10px 0 0;
+}
+
+.custom-account-list {
+	display: flex;
+	flex-direction: column;
+	padding: 0 0 0 0;
+}
+
+.custom-account-item {
+	display: flex;
+	align-items: center;
+	padding: 10px 18px 8px 18px;
+	cursor: pointer;
+	font-size: 1.08rem;
+	transition: background 0.15s;
+}
+.custom-account-item:hover {
+	background: rgba(255,255,255,0.07);
+}
+
+.custom-account-divider {
+	border-bottom: 1.5px solid #444;
+	margin: 0 12px 0 12px;
+}
+
+
+.custom-search-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0,0,0,0.3);
+	z-index: 9999;
+}
+
+.custom-search-box {
+	background: rgba(35,35,41,0.7);
+	border-radius: 10px;
+	box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37), 0 0 16px 2px #fff2;
+	padding: 18px 24px 10px 24px;
+	min-width: 340px;
+	max-width: 90vw;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	top: 80px;
+	color: #fff;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	backdrop-filter: blur(8px);
+	border: 1.5px solid rgba(255,255,255,0.18);
+}
+
+.custom-search-input {
+	width: 100%;
+	background: rgba(0,0,0,0.15);
+	border: none;
+	border-bottom: 2px solid #fff3;
+	color: #fff;
+	font-size: 1.3rem;
+	padding: 6px 0 8px 0;
+	outline: none;
+	margin-bottom: 6px;
+	box-shadow: none;
+	transition: background 0.2s;
+}
+
+.custom-search-input::placeholder {
+	color: #aaa;
+	opacity: 1;
+}
+
+.custom-search-close {
+	position: absolute;
+	top: 18px;
+	right: 24px;
+	font-size: 1.3rem;
+	color: #aaa;
+	cursor: pointer;
+	transition: color 0.2s;
+}
+.custom-search-close:hover {
+	color: #fff;
+}
+
+.custom-search-divider {
+	border-bottom: 1px solid #444;
+	margin: 8px 0 6px 0;
+}
+
+.custom-search-result {
+	color: #ccc;
+	font-size: 1.1rem;
+	margin-top: 2px;
+}
