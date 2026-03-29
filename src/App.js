@@ -10,7 +10,7 @@ function App() {
       <div style={{ backgroundColor: 'rgba(35,35,41,0.95)', minHeight: '100vh' }}>  
         <Header />
         <Routes>
-          <Route path="/" element={<div style={{ padding: '20px', color: 'white' }}><h1>Trang Chủ</h1><p>Chào mừng đến với trang web!</p></div>} />
+          <Route path="/" element={<div style={{ padding: '20px', color: 'white' }}></div>} />
           <Route path="/list" element={<List />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
