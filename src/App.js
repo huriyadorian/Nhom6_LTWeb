@@ -1,5 +1,4 @@
 import Header from './components/Header';
-import List from './components/list';
 import Contact from './components/Contact';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -7,11 +6,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 function App() {
   return (
     <Router>
-      <div style={{ backgroundColor: 'rgba(35,35,41,0.95)', minHeight: '100vh' }}>  
+      <div style={{ backgroundColor: 'var(--bg-color)', minHeight: '100vh', color: 'var(--text-color)' }}>
         <Header />
         <Routes>
-          <Route path="/" element={<div style={{ padding: '20px', color: 'white' }}></div>} />
-          <Route path="/list" element={<List />} />
+          <Route path="/" element={<div style={{ padding: '20px' }}></div>} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </div>

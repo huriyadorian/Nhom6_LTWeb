@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
-import { Nav, Navbar, NavLink } from 'react-bootstrap'
-import { FaSearch, FaUser, FaTimes, FaHome, FaList, FaQuestion, FaExchangeAlt } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { FaSearch, FaUser, FaTimes, FaShoppingCart, FaSun, FaMoon } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { signInWithEmailAndPassword, signInWithPopup, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, provider } from '../firebase';
+import './Header.css';
 
 function Header() {
-  const [showSearch, setShowSearch] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
@@ -14,96 +15,147 @@ function Header() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [searchValue, setSearchValue] = useState("");
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }, [isDarkMode]);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if(searchValue.trim()) {
+      // Logic block for search can go here
+      console.log("Searching for:", searchValue);
+    }
+  };
+
   return (
-    <div>
-      <Navbar bg="dark" expand="lg" variant="dark" style={{ backgroundColor: 'rgba(35,35,41,0.95)', width: '100%', margin: 0, padding: 0 }}>
-        <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 88px', minHeight: 64 }}>
-          <Navbar.Brand href="/">LOGO</Navbar.Brand>
-          <Nav className="me-auto my-2 my-lg-0 ms-3" >
-            <NavLink as={Link} to="/" className="custom-nav-link">TRANG CHỦ</NavLink>
-            <NavLink as={Link} to="/list" className="custom-nav-link">DANH SÁCH</NavLink>
-            <NavLink as={Link} to="/contact" className="custom-nav-link">LIÊN HỆ</NavLink>
-          </Nav>
-          <div className="d-flex align-items-center gap-4">
-            <span
-              className="custom-navbar-icon"
-              onClick={() => setShowSearch(true)}
-            >
-              <FaSearch />
-            </span>
-            <span
-              className="custom-navbar-icon"
-              onClick={() => setShowAccount(true)}
-            >
-              <FaUser />
-            </span>
-          </div>
-        </div>
-      </Navbar>
-      {showSearch && (
-        <div className="custom-search-modal">
-          <div className="custom-search-box">
+    <div className="header-container">
+      {/* Top Header Row */}
+      <div className="header-top">
+        <Link to="/" className="brand-logo">
+          B&B Books
+        </Link>
+        
+        <div className="search-bar-container">
+          <form onSubmit={handleSearch}>
             <input
-              className="custom-search-input"
+              className="search-input"
               type="text"
-              placeholder="Nhập từ khóa"
+              placeholder="Tìm kiếm sách, tác giả, nhà xuất bản..."
               value={searchValue}
               onChange={e => setSearchValue(e.target.value)}
-              autoFocus
             />
-            <span className="custom-search-close" onClick={() => setShowSearch(false)}>
-              <FaTimes />
-            </span>
-            <div className="custom-search-divider" />
-            <div className="custom-search-result">Không Tìm Thấy Kết Quả...</div>
+            <button type="submit" className="search-btn">
+              <FaSearch size={18} />
+            </button>
+          </form>
+        </div>
+
+        <div className="header-actions">
+          <div className="action-icon-wrapper" title="Giỏ hàng">
+            <FaShoppingCart size={20} />
+            <span className="cart-badge">0</span>
+          </div>
+          <div 
+            className="action-icon-wrapper" 
+            title="Tài khoản"
+            onClick={() => setShowAccount(true)}
+          >
+            <FaUser size={20} />
           </div>
         </div>
-      )}
+      </div>
+
+      {/* Bottom Category Navbar */}
+      <div className="header-bottom">
+        <Navbar expand="lg" className="nav-container py-0">
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto main-nav">
+              <Nav.Link as={Link} to="/" className="nav-link-custom">Trang chủ</Nav.Link>
+              
+              <NavDropdown title="Thể loại" id="basic-nav-dropdown" className="category-dropdown">
+                <NavDropdown.Item as={Link} to="#sach-mam-non">Sách mầm non</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="#sach-thieu-nhi">Sách thiếu nhi</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="#sach-ki-nang">Sách kĩ năng</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="#sach-kinh-doanh">Sách kinh doanh</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="#sach-me-va-be">Sách mẹ và bé</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="#sach-van-hoc">Sách văn học</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="#sach-tham-khao">Sách tham khảo</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item as={Link} to="#notebook">Notebook</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="#truyen">Truyện</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="#manga">Manga</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item as={Link} to="#top-best-seller" style={{color: '#ff6b6b', fontWeight: '600'}}>Top best seller</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="#sach-moi" style={{color: '#20c997', fontWeight: '600'}}>Sách mới</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="#sach-sap-phat-hanh" style={{color: '#339af0', fontWeight: '600'}}>Sách sắp phát hành</NavDropdown.Item>
+              </NavDropdown>
+
+              {/* Extras links if needed in future */}
+              <Nav.Link as={Link} to="/contact" className="nav-link-custom">Liên hệ</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+      </div>
+
+      {/* Modals for Account, Login, SignUp */}
       {showAccount && (
-        <div className="custom-search-modal">
-          <div className="custom-account-box">
-            <div className="custom-account-header">
+        <div className="custom-modal-overlay" onClick={() => setShowAccount(false)}>
+          <div className="custom-modal-box" onClick={e => e.stopPropagation()}>
+            <div className="custom-modal-header">
               <span>Tính Năng Tài Khoản</span>
-              <span className="custom-search-close" onClick={() => setShowAccount(false)}><FaTimes /></span>
+              <FaTimes className="close-btn" onClick={() => setShowAccount(false)} />
             </div>
-            <div className="custom-account-list">
-              <div className="custom-account-item" onClick={() => { setShowAccount(false); setShowLogin(true); }}><FaUser style={{marginRight:8}}/> Đăng nhập</div>
-              <div className="custom-account-item" onClick={() => { setShowAccount(false); setShowSignUp(true); }}><FaUser style={{marginRight:8}}/> Đăng ký</div>
-              <div className="custom-account-divider" />
-              <div className="custom-account-item" onClick={() => { navigate('/'); setShowAccount(false); }}><FaHome style={{marginRight:8}}/> Trang Chủ</div>
-              <div className="custom-account-item" onClick={() => { navigate('/list'); setShowAccount(false); }}><FaList style={{marginRight:8}}/> Danh Sách</div>
-              <div className="custom-account-item" onClick={() => { navigate('/contact'); setShowAccount(false); }}><FaQuestion style={{marginRight:8}}/> Liên Hệ</div>
-              <div className="custom-account-item"><FaExchangeAlt style={{marginRight:8}}/> Chuyển Đổi Giao Diện</div>
-              <div className="custom-account-divider" />
+            <div className="custom-modal-body" style={{padding: '10px 0'}}>
+              <div className="dropdown-item" style={{padding: '12px 20px', cursor: 'pointer', borderBottom: '1px solid var(--border-color, #eee)'}} onClick={() => { setShowAccount(false); setShowLogin(true); }}>
+                <FaUser style={{marginRight: 10, color: '#007bff'}}/> Đăng nhập
+              </div>
+              <div className="dropdown-item" style={{padding: '12px 20px', cursor: 'pointer', borderBottom: '1px solid var(--border-color, #eee)'}} onClick={() => { setShowAccount(false); setShowSignUp(true); }}>
+                <FaUser style={{marginRight: 10, color: '#28a745'}}/> Đăng ký
+              </div>
+              <div 
+                className="dropdown-item" 
+                style={{padding: '12px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center'}} 
+                onClick={() => { setIsDarkMode(!isDarkMode); setShowAccount(false); }}
+              >
+                {isDarkMode ? <FaSun style={{marginRight: 10, color: '#f39c12'}}/> : <FaMoon style={{marginRight: 10, color: '#666'}}/>}
+                {isDarkMode ? 'Giao diện sáng' : 'Giao diện tối'}
+              </div>
             </div>
           </div>
         </div>
       )}
+
       {showLogin && (
-        <div className="custom-search-modal">
-          <div className="custom-account-box custom-login-box">
-            <div className="custom-account-header">
+        <div className="custom-modal-overlay" onClick={() => setShowLogin(false)}>
+          <div className="custom-modal-box" onClick={e => e.stopPropagation()}>
+            <div className="custom-modal-header">
               <span>Đăng Nhập</span>
-              <span className="custom-search-close" onClick={() => setShowLogin(false)}><FaTimes /></span>
+              <FaTimes className="close-btn" onClick={() => setShowLogin(false)} />
             </div>
-            <div style={{ padding: '15px' }}>
+            <div className="custom-modal-body">
               <input
                 type="email"
                 placeholder="Email"
+                className="modal-input"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                style={{ width: '100%', padding: '8px', marginBottom: '8px', borderRadius: '5px', border: '1px solid #ccc' }}
               />
               <input
                 type="password"
                 placeholder="Mật khẩu"
+                className="modal-input"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                style={{ width: '100%', padding: '8px', marginBottom: '8px', borderRadius: '5px', border: '1px solid #ccc' }}
               />
-              {error && <p style={{ color: 'red' }}>{error}</p>}
+              {error && <p style={{ color: '#dc3545', fontSize: '13px', marginBottom: '10px' }}>{error}</p>}
               <button
+                className="modal-btn modal-btn-primary"
                 onClick={async () => {
                   try {
                     await signInWithEmailAndPassword(auth, email, password);
@@ -115,12 +167,12 @@ function Header() {
                     setError('Đăng nhập thất bại: ' + err.message);
                   }
                 }}
-                style={{ width: '100%', padding: '8px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
               >
                 Đăng Nhập
               </button>
-              <div style={{ margin: '8px 0', textAlign: 'center' }}>hoặc</div>
+              <div style={{ margin: '15px 0', textAlign: 'center', color: '#888', fontSize: '14px' }}>hoặc</div>
               <button
+                className="modal-btn modal-btn-google"
                 onClick={async () => {
                   try {
                     await signInWithPopup(auth, provider);
@@ -132,39 +184,43 @@ function Header() {
                     setError('Đăng nhập với Google thất bại: ' + err.message);
                   }
                 }}
-                style={{ width: '100%', padding: '8px', backgroundColor: '#db4437', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
               >
                 Đăng Nhập với Google
               </button>
-              <div style={{ margin: '8px 0', textAlign: 'center', cursor: 'pointer', color: '#007bff' }} onClick={() => { setShowLogin(false); setShowSignUp(true); }}>không có tài khoản ? Đăng ký</div>
+              <div className="auth-switch">
+                Không có tài khoản? <span onClick={() => { setShowLogin(false); setShowSignUp(true); }}>Đăng ký ngay</span>
+              </div>
             </div>
           </div>
         </div>
       )}
+
       {showSignUp && (
-        <div className="custom-search-modal">
-          <div className="custom-account-box custom-login-box">
-            <div className="custom-account-header">
-              <span>Đăng Ký</span>
-              <span className="custom-search-close" onClick={() => setShowSignUp(false)}><FaTimes /></span>
+        <div className="custom-modal-overlay" onClick={() => setShowSignUp(false)}>
+          <div className="custom-modal-box" onClick={e => e.stopPropagation()}>
+            <div className="custom-modal-header">
+              <span>Đăng Ký Tài Khoản</span>
+              <FaTimes className="close-btn" onClick={() => setShowSignUp(false)} />
             </div>
-            <div style={{ padding: '15px' }}>
+            <div className="custom-modal-body">
               <input
                 type="email"
                 placeholder="Email"
+                className="modal-input"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                style={{ width: '100%', padding: '8px', marginBottom: '8px', borderRadius: '5px', border: '1px solid #ccc' }}
               />
               <input
                 type="password"
-                placeholder="Mật khẩu"
+                placeholder="Mật khẩu (ít nhất 6 ký tự)"
+                className="modal-input"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                style={{ width: '100%', padding: '8px', marginBottom: '8px', borderRadius: '5px', border: '1px solid #ccc' }}
               />
-              {error && <p style={{ color: 'red' }}>{error}</p>}
+              {error && <p style={{ color: '#dc3545', fontSize: '13px', marginBottom: '10px' }}>{error}</p>}
               <button
+                className="modal-btn modal-btn-primary"
+                style={{ backgroundColor: '#28a745' }}
                 onClick={async () => {
                   try {
                     await createUserWithEmailAndPassword(auth, email, password);
@@ -176,12 +232,12 @@ function Header() {
                     setError('Đăng ký thất bại: ' + err.message);
                   }
                 }}
-                style={{ width: '100%', padding: '8px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
               >
                 Đăng Ký
               </button>
-              <div style={{ margin: '8px 0', textAlign: 'center' }}>hoặc</div>
+              <div style={{ margin: '15px 0', textAlign: 'center', color: '#888', fontSize: '14px' }}>hoặc đăng ký bằng</div>
               <button
+                className="modal-btn modal-btn-google"
                 onClick={async () => {
                   try {
                     await signInWithPopup(auth, provider);
@@ -193,17 +249,18 @@ function Header() {
                     setError('Đăng ký với Google thất bại: ' + err.message);
                   }
                 }}
-                style={{ width: '100%', padding: '8px', backgroundColor: '#db4437', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
               >
                 Đăng Ký với Google
               </button>
-              <div style={{ margin: '8px 0', textAlign: 'center', cursor: 'pointer', color: '#007bff' }} onClick={() => { setShowSignUp(false); setShowLogin(true); }}>đã có tài khoản ? Đăng nhập</div>
+              <div className="auth-switch">
+                Đã có tài khoản? <span onClick={() => { setShowSignUp(false); setShowLogin(true); }}>Đăng nhập</span>
+              </div>
             </div>
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export default Header
+export default Header;
