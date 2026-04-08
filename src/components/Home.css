@@ -19,10 +19,10 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  min-width: 0; /* Prevents flex children from blowing out */
+  min-width: 0; /* Ngăn chặn các phần tử con bị tràn ra ngoài kích thước flex */
 }
 
-/* On mobile, standard Bootstrap class d-none d-lg-block will hide sidebar, but if we need custom logic: */
+/* Trên thiết bị di động, class chuẩn của Bootstrap d-none d-lg-block sẽ ẩn sidebar, logic tùy chỉnh: */
 @media (max-width: 991px) {
   .home-container {
     flex-direction: column;
@@ -32,9 +32,9 @@
   }
 }
 
-/* Sections */
+/* Các Khu Vực / Khối (Sections) */
 .section-wrapper {
-  background-color: var(--header-bg, #fff); /* Using app's theme var */
+  background-color: var(--header-bg, #fff); /* Sử dụng biến giao diện của hệ thống */
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -57,7 +57,7 @@
   margin: 0;
 }
 
-/* Category Filters */
+/* Bộ lọc Danh mục (Category Filters) */
 .section-filters {
   display: flex;
   gap: 15px;
@@ -74,7 +74,7 @@
   color: #007bff;
 }
 
-/* Product Card */
+/* Thẻ Sản Phẩm (Product Card) */
 .product-card {
   display: flex;
   flex-direction: column;
@@ -94,7 +94,7 @@
 .product-image-wrapper {
   width: 100%;
   aspect-ratio: 3/4;
-  background-color: #e9ecef; /* Placeholder gray */
+  background-color: #e9ecef; /* Màu nền xám (Placeholder) */
   border-radius: 4px;
   overflow: hidden;
   margin-bottom: 15px;
@@ -118,7 +118,7 @@
 }
 
 .sidebar-product .product-image-wrapper {
-  aspect-ratio: 1; /* More squarish in sidebar if needed, or 3/4 */
+  aspect-ratio: 1; /* Cân đối vuông góc hơn trong dải sidebar nếu cần */
   background-color: transparent;
 }
 .sidebar-product .product-image-placeholder {
@@ -145,7 +145,7 @@
   padding: 1px 3px;
 }
 
-/* Book Title */
+/* Tiêu đề Sách */
 .product-title {
   font-size: 14px;
   font-weight: 500;
@@ -160,7 +160,7 @@
   text-overflow: ellipsis;
 }
 
-/* Pricing */
+/* Phần Giá cả */
 .product-price-row {
   display: flex;
   align-items: center;
@@ -178,7 +178,7 @@
 .price-discounted {
   font-size: 16px;
   font-weight: 700;
-  color: #00a650; /* Green color for price as per image */
+  color: #00a650; /* Màu xanh lá cho điểm giá giống ảnh mẫu */
 }
 
 .discount-badge {
@@ -212,7 +212,7 @@
   cursor: pointer;
 }
 
-/* Floating Actions */
+/* Nút Tương tác Cố định (Floating Actions) */
 .floating-actions {
   position: fixed;
   right: 20px;
@@ -241,9 +241,9 @@
   transform: scale(1.1);
 }
 
-.fab-cart { background-color: #198754; } /* Green */
-.fab-top { background-color: #198754; } /* Green */
-/* Slider styles */
+.fab-cart { background-color: #198754; } /* Xanh lá */
+.fab-top { background-color: #198754; } /* Xanh lá */
+/* Kiểu dáng cho phần tử Trượt (Slider) */
 .slider-wrapper {
   position: relative;
   display: flex;
@@ -255,20 +255,20 @@
   overflow-x: auto;
   gap: 15px;
   scroll-behavior: smooth;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none; /* Trình duyệt Firefox */
   padding-bottom: 5px;
   width: 100%;
 }
 
 .slider-container::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  display: none; /* Trình duyệt Chrome/Safari */
 }
 
 .slider-item {
   flex: 0 0 200px;
 }
 
-/* Arrow buttons */
+/* Các nút điều hướng mũi tên */
 .slider-arrow {
   position: absolute;
   top: 50%;

@@ -74,7 +74,7 @@ const mockMangaBooks = [
 const ProductCard = ({ book }) => (
   <div className="product-card">
     <div className="product-image-wrapper">
-      {/* Dynamic image would go here: <img src={book.img} /> */}
+      {/* Hình ảnh sẽ được đặt ở đây: <img src={book.img} /> */}
     </div>
     <div className="product-title">{book.title}</div>
     <div className="product-price-row">
@@ -121,9 +121,9 @@ function Home() {
   return (
     <div className="home-container">
 
-      {/* Left Sidebar - Hidden on mobile via CSS flex-direction/display none */}
+      {/* Cột Sidebar Trái - Ẩn trên thiết bị di động */}
       <div className="home-sidebar">
-        {/* Block 1: SÁCH MỚI LÊN KỆ */}
+        {/* Khối 1: SÁCH MỚI LÊN KỆ */}
         <div className="section-wrapper" style={{ padding: '0', overflow: 'hidden', marginBottom: '20px' }}>
           <div style={{ backgroundColor: '#e9ecef', padding: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div className="section-title" style={{ margin: 0, fontSize: '13px' }}>SÁCH MỚI LÊN KỆ</div>
@@ -137,7 +137,7 @@ function Home() {
           </div>
         </div>
 
-        {/* Block 2: COMBO BÁN CHẠY */}
+        {/* Khối 2: COMBO BÁN CHẠY */}
         <div className="section-wrapper" style={{ padding: '0', overflow: 'hidden', marginBottom: '20px' }}>
           <div style={{ backgroundColor: '#e9ecef', padding: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div className="section-title" style={{ margin: 0, fontSize: '13px' }}>COMBO BÁN CHẠY</div>
@@ -158,7 +158,7 @@ function Home() {
           </div>
         </div>
 
-        {/* Block 3: TIÊU ĐIỂM SÁCH HAY */}
+        {/* Khối 3: TIÊU ĐIỂM SÁCH HAY */}
         <div className="section-wrapper" style={{ padding: '0', overflow: 'hidden' }}>
           <div style={{ backgroundColor: '#e9ecef', padding: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div className="section-title" style={{ margin: 0, fontSize: '13px' }}>TIÊU ĐIỂM SÁCH HAY</div>
@@ -180,10 +180,10 @@ function Home() {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Nội Dung Chính */}
       <div className="home-main">
 
-        {/* Section: Top Sách Bán Chạy */}
+        {/* Mục: Top Sách Bán Chạy */}
         <div className="section-wrapper">
           <div className="section-header">
             <h2 className="section-title">TOP SÁCH BÁN CHẠY</h2>
@@ -206,7 +206,7 @@ function Home() {
           <div className="see-more-link">Xem tất cả</div>
         </div>
 
-        {/* Section: Sách Kĩ Năng Sống */}
+        {/* Mục: Sách Kĩ Năng Sống */}
         <div className="section-wrapper">
           <div className="section-header">
             <h2 className="section-title">SÁCH KĨ NĂNG SỐNG</h2>
@@ -234,7 +234,7 @@ function Home() {
           </div>
         </div>
 
-        {/* Section: Sách Thiếu Nhi */}
+        {/* Mục: Sách Thiếu Nhi */}
         <div className="section-wrapper">
           <div className="section-header">
             <h2 className="section-title">SÁCH THIẾU NHI</h2>
@@ -262,7 +262,7 @@ function Home() {
           </div>
         </div>
 
-        {/* Section: Sách Văn Học */}
+        {/* Mục: Sách Văn Học */}
         <div className="section-wrapper">
           <div className="section-header">
             <h2 className="section-title">SÁCH VĂN HỌC</h2>
@@ -290,7 +290,7 @@ function Home() {
           </div>
         </div>
 
-        {/* Section: Sách Tham Khảo */}
+        {/* Mục: Sách Tham Khảo */}
         <div className="section-wrapper">
           <div className="section-header">
             <h2 className="section-title">SÁCH THAM KHẢO</h2>
@@ -318,7 +318,7 @@ function Home() {
           </div>
         </div>
 
-        {/* Section: Manga */}
+        {/* Mục: Manga - Comic */}
         <div className="section-wrapper">
           <div className="section-header">
             <h2 className="section-title">MANGA - COMIC</h2>
@@ -348,7 +348,7 @@ function Home() {
 
       </div>
 
-      {/* Floating Action Buttons */}
+      {/* Các Nút Hành Động Trôi Nổi (FAB) */}
       <div className="floating-actions">
         <div className="fab fab-cart" title="Giỏ Hàng">
           <FaShoppingCart />
