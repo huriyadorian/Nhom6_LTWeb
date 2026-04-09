@@ -243,6 +243,7 @@
 
 .fab-cart { background-color: #198754; } /* Xanh lá */
 .fab-top { background-color: #198754; } /* Xanh lá */
+.fab-facebook { background-color: #1877F2; text-decoration: none; }
 /* Kiểu dáng cho phần tử Trượt (Slider) */
 .slider-wrapper {
   position: relative;

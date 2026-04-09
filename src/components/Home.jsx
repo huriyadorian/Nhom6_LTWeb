@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { FaShoppingCart, FaArrowUp, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaShoppingCart, FaArrowUp, FaChevronLeft, FaChevronRight, FaFacebook } from 'react-icons/fa';
 import './Home.css';
 
 const mockBooks = [
@@ -97,13 +97,79 @@ const SidebarProductCard = ({ book }) => (
   </div>
 );
 
+const BookSliderSection = ({ title, books }) => {
+  const sliderRef = useRef(null);
+  const [filter, setFilter] = useState('default'); // 'default', 'low', 'high'
+
+  const scrollSlider = (direction) => {
+    if (sliderRef.current) {
+      const scrollAmount = 300;
+      sliderRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const sortedBooks = React.useMemo(() => {
+    if (filter === 'default') return books;
+    const sorted = [...books].sort((a, b) => {
+      const priceA = parseInt(a.newPrice.replace(/[^0-9]/g, ''), 10);
+      const priceB = parseInt(b.newPrice.replace(/[^0-9]/g, ''), 10);
+      if (filter === 'low') return priceA - priceB;
+      if (filter === 'high') return priceB - priceA;
+      return 0;
+    });
+    return sorted;
+  }, [books, filter]);
+
+  return (
+    <div className="section-wrapper">
+      <div className="section-header">
+        <h2 className="section-title">{title}</h2>
+        <div className="section-filters">
+          <span 
+            className={`filter-link ${filter === 'default' ? 'active' : ''}`} 
+            style={filter === 'default' ? {color: '#00a650', fontWeight: 'bold'} : {}}
+            onClick={() => setFilter('default')}
+          >
+            Mới/Nổi bật
+          </span>
+          <span className="filter-link" style={{ color: '#333', fontWeight: 600 }}>Bán chạy nhất</span>
+          <span 
+            className={`filter-link ${filter === 'low' ? 'active' : ''}`} 
+            style={filter === 'low' ? {color: '#00a650', fontWeight: 'bold'} : {}}
+            onClick={() => setFilter('low')}
+          >
+            Giá thấp
+          </span>
+          <span 
+            className={`filter-link ${filter === 'high' ? 'active' : ''}`} 
+            style={filter === 'high' ? {color: '#00a650', fontWeight: 'bold'} : {}}
+            onClick={() => setFilter('high')}
+          >
+            Giá cao
+          </span>
+        </div>
+      </div>
+      <div className="slider-wrapper">
+        <button className="slider-arrow slider-arrow-left" onClick={() => scrollSlider('left')}>
+          <FaChevronLeft />
+        </button>
+        <div className="slider-container" ref={sliderRef}>
+          {sortedBooks.map(book => (
+            <div key={book.id} className="slider-item">
+              <ProductCard book={book} />
+            </div>
+          ))}
+        </div>
+        <button className="slider-arrow slider-arrow-right" onClick={() => scrollSlider('right')}>
+          <FaChevronRight />
+        </button>
+      </div>
+    </div>
+  );
+};
+
 function Home() {
   const topBooksRef = useRef(null);
-  const skillBooksRef = useRef(null);
-  const kidsBooksRef = useRef(null);
-  const literatureBooksRef = useRef(null);
-  const refBooksRef = useRef(null);
-  const mangaBooksRef = useRef(null);
   const [showAllCombos, setShowAllCombos] = useState(false);
   const [showAllHighlights, setShowAllHighlights] = useState(false);
 
@@ -205,146 +271,12 @@ function Home() {
           </div>
           <div className="see-more-link">Xem tất cả</div>
         </div>
-
-        {/* Mục: Sách Kĩ Năng Sống */}
-        <div className="section-wrapper">
-          <div className="section-header">
-            <h2 className="section-title">SÁCH KĨ NĂNG SỐNG</h2>
-            <div className="section-filters">
-              <span className="filter-link">Mới/Nổi bật</span>
-              <span className="filter-link" style={{ color: '#333', fontWeight: 600 }}>Bán chạy nhất</span>
-              <span className="filter-link">Giá thấp</span>
-              <span className="filter-link">Giá cao</span>
-            </div>
-          </div>
-          <div className="slider-wrapper">
-            <button className="slider-arrow slider-arrow-left" onClick={() => scrollSlider(skillBooksRef, 'left')}>
-              <FaChevronLeft />
-            </button>
-            <div className="slider-container" ref={skillBooksRef}>
-              {mockSkillBooks.map(book => (
-                <div key={book.id} className="slider-item">
-                  <ProductCard book={book} />
-                </div>
-              ))}
-            </div>
-            <button className="slider-arrow slider-arrow-right" onClick={() => scrollSlider(skillBooksRef, 'right')}>
-              <FaChevronRight />
-            </button>
-          </div>
-        </div>
-
-        {/* Mục: Sách Thiếu Nhi */}
-        <div className="section-wrapper">
-          <div className="section-header">
-            <h2 className="section-title">SÁCH THIẾU NHI</h2>
-            <div className="section-filters">
-              <span className="filter-link">Mới/Nổi bật</span>
-              <span className="filter-link" style={{ color: '#333', fontWeight: 600 }}>Bán chạy nhất</span>
-              <span className="filter-link">Giá thấp</span>
-              <span className="filter-link">Giá cao</span>
-            </div>
-          </div>
-          <div className="slider-wrapper">
-            <button className="slider-arrow slider-arrow-left" onClick={() => scrollSlider(kidsBooksRef, 'left')}>
-              <FaChevronLeft />
-            </button>
-            <div className="slider-container" ref={kidsBooksRef}>
-              {mockKidsBooks.map(book => (
-                <div key={book.id} className="slider-item">
-                  <ProductCard book={book} />
-                </div>
-              ))}
-            </div>
-            <button className="slider-arrow slider-arrow-right" onClick={() => scrollSlider(kidsBooksRef, 'right')}>
-              <FaChevronRight />
-            </button>
-          </div>
-        </div>
-
-        {/* Mục: Sách Văn Học */}
-        <div className="section-wrapper">
-          <div className="section-header">
-            <h2 className="section-title">SÁCH VĂN HỌC</h2>
-            <div className="section-filters">
-              <span className="filter-link">Mới/Nổi bật</span>
-              <span className="filter-link" style={{ color: '#333', fontWeight: 600 }}>Bán chạy nhất</span>
-              <span className="filter-link">Giá thấp</span>
-              <span className="filter-link">Giá cao</span>
-            </div>
-          </div>
-          <div className="slider-wrapper">
-            <button className="slider-arrow slider-arrow-left" onClick={() => scrollSlider(literatureBooksRef, 'left')}>
-              <FaChevronLeft />
-            </button>
-            <div className="slider-container" ref={literatureBooksRef}>
-              {mockLiteratureBooks.map(book => (
-                <div key={book.id} className="slider-item">
-                  <ProductCard book={book} />
-                </div>
-              ))}
-            </div>
-            <button className="slider-arrow slider-arrow-right" onClick={() => scrollSlider(literatureBooksRef, 'right')}>
-              <FaChevronRight />
-            </button>
-          </div>
-        </div>
-
-        {/* Mục: Sách Tham Khảo */}
-        <div className="section-wrapper">
-          <div className="section-header">
-            <h2 className="section-title">SÁCH THAM KHẢO</h2>
-            <div className="section-filters">
-              <span className="filter-link">Mới/Nổi bật</span>
-              <span className="filter-link" style={{ color: '#333', fontWeight: 600 }}>Bán chạy nhất</span>
-              <span className="filter-link">Giá thấp</span>
-              <span className="filter-link">Giá cao</span>
-            </div>
-          </div>
-          <div className="slider-wrapper">
-            <button className="slider-arrow slider-arrow-left" onClick={() => scrollSlider(refBooksRef, 'left')}>
-              <FaChevronLeft />
-            </button>
-            <div className="slider-container" ref={refBooksRef}>
-              {mockReferenceBooks.map(book => (
-                <div key={book.id} className="slider-item">
-                  <ProductCard book={book} />
-                </div>
-              ))}
-            </div>
-            <button className="slider-arrow slider-arrow-right" onClick={() => scrollSlider(refBooksRef, 'right')}>
-              <FaChevronRight />
-            </button>
-          </div>
-        </div>
-
-        {/* Mục: Manga - Comic */}
-        <div className="section-wrapper">
-          <div className="section-header">
-            <h2 className="section-title">MANGA - COMIC</h2>
-            <div className="section-filters">
-              <span className="filter-link">Mới/Nổi bật</span>
-              <span className="filter-link" style={{ color: '#333', fontWeight: 600 }}>Bán chạy nhất</span>
-              <span className="filter-link">Giá thấp</span>
-              <span className="filter-link">Giá cao</span>
-            </div>
-          </div>
-          <div className="slider-wrapper">
-            <button className="slider-arrow slider-arrow-left" onClick={() => scrollSlider(mangaBooksRef, 'left')}>
-              <FaChevronLeft />
-            </button>
-            <div className="slider-container" ref={mangaBooksRef}>
-              {mockMangaBooks.map(book => (
-                <div key={book.id} className="slider-item">
-                  <ProductCard book={book} />
-                </div>
-              ))}
-            </div>
-            <button className="slider-arrow slider-arrow-right" onClick={() => scrollSlider(mangaBooksRef, 'right')}>
-              <FaChevronRight />
-            </button>
-          </div>
-        </div>
+        {/* Mục: Các Thể Loại Sách Sử Dụng Component Tái Sử Dụng Gồm Chức Năng Lọc Giá */}
+        <BookSliderSection title="SÁCH KĨ NĂNG SỐNG" books={mockSkillBooks} />
+        <BookSliderSection title="SÁCH THIẾU NHI" books={mockKidsBooks} />
+        <BookSliderSection title="SÁCH VĂN HỌC" books={mockLiteratureBooks} />
+        <BookSliderSection title="SÁCH THAM KHẢO" books={mockReferenceBooks} />
+        <BookSliderSection title="MANGA - COMIC" books={mockMangaBooks} />
 
       </div>
 
@@ -356,9 +288,15 @@ function Home() {
         <div className="fab fab-top" title="Lên Đầu Trang" onClick={scrollToTop}>
           <FaArrowUp />
         </div>
-        <div className="fab fab-zalo" title="Chat Zalo">
-          Zalo
-        </div>
+        <a 
+          href="[Điền link Facebook sau]" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="fab fab-facebook" 
+          title="Tới Trang Facebook"
+        >
+          <FaFacebook />
+        </a>
       </div>
 
     </div>
