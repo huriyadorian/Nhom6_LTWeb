@@ -1,80 +1,48 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { FaShoppingCart, FaArrowUp, FaChevronLeft, FaChevronRight, FaFacebook } from 'react-icons/fa';
+import db from '../database.json';
 import './Home.css';
 
-const mockBooks = [
-  { id: 1, title: '101 Từ Đầu Tiên Cho Bé - Động Vật', oldPrice: '60,000đ', newPrice: '48,000đ', discount: '-20%' },
-  { id: 2, title: 'Tuyển Tập Truyện Cổ Tích Việt Nam', oldPrice: '125,000đ', newPrice: '100,000đ', discount: '-20%' },
-  { id: 3, title: 'Thai Giáo Theo Chuyên Gia - 280 ngày', oldPrice: '115,000đ', newPrice: '92,000đ', discount: '-20%' },
-  { id: 4, title: 'Combo Tri Thức Cho Một Thai Kì Khỏe Mạnh', oldPrice: '255,000đ', newPrice: '191,250đ', discount: '-25%' },
-  { id: 11, title: 'Combo Cẩm Nang Về Tuổi Dậy Thì', oldPrice: '275,000đ', newPrice: '206,250đ', discount: '-25%' },
-  { id: 12, title: 'Combo Rèn Luyện Kỹ Năng Sống', oldPrice: '505,000đ', newPrice: '378,750đ', discount: '-25%' }
-];
+// ── Helper ──────────────────────────────────────────────────────────────────
+const fmt = (price) =>
+  price ? price.toLocaleString('vi-VN') + 'đ' : '';
 
-const mockSkillBooks = [
-  { id: 5, title: 'Combo 2 Cuốn Làm Chủ Cảm Xúc', oldPrice: '150,000đ', newPrice: '112,500đ', discount: '-25%' },
-  { id: 6, title: 'Chuẩn Mực Công Việc Mới', oldPrice: '88,000đ', newPrice: '66,000đ', discount: '-25%' },
-  { id: 7, title: 'Công Việc Của Bạn Có Đáng Làm ', oldPrice: '140,000đ', newPrice: '112,000đ', discount: '-20%' },
-  { id: 8, title: 'Làm Chủ Cảm Xúc Cuộc Đời', oldPrice: '95,000đ', newPrice: '76,000đ', discount: '-20%' }
-];
+const dbBook = (b) => ({
+  ...b,
+  oldPrice: fmt(b.oldPrice),
+  newPrice: fmt(b.newPrice),
+  discount: `-${b.discount}%`,
+});
 
-const mockKidsBooks = [
-  { id: 18, title: 'Truyện Cổ Tích Grimm - Trọn Bộ Mới Nhất', oldPrice: '185,000đ', newPrice: '148,000đ', discount: '-20%' },
-  { id: 19, title: 'Truyện Cổ Tích Andersen - Bản Gốc', oldPrice: '200,000đ', newPrice: '160,000đ', discount: '-20%' },
-  { id: 20, title: 'Nghìn Lẻ Một Đêm - Trọn Bộ Thơ Âu', oldPrice: '320,000đ', newPrice: '256,000đ', discount: '-20%' },
-  { id: 21, title: 'Truyện Cổ Tích Việt Nam Chọn Lọc', oldPrice: '100,000đ', newPrice: '80,000đ', discount: '-20%' },
-  { id: 22, title: 'Cổ Tích Thế Giới - Những Bà Tiên', oldPrice: '145,000đ', newPrice: '116,000đ', discount: '-20%' }
-];
+// ── Lấy sách theo category_id từ DB ─────────────────────────────────────────
+const byCategory = (catId) =>
+  db.books.filter((b) => b.category_id === catId).map(dbBook);
 
-const mockSidebarBooks = [
-  { id: 9, title: 'Sách: Công Việc Của Bạn Có Đáng Làm K...', oldPrice: '140,000đ', newPrice: '112,000đ', discount: '-20%' },
-  { id: 10, title: 'Sách: Triết Lí To To Cho Đám Trẻ Nhỏ Nhỏ', oldPrice: '195,000đ', newPrice: '156,000đ', discount: '-20%' }
-];
+// ── Dữ liệu cho từng section ─────────────────────────────────────────────────
+// Top bán chạy: isBestSeller = true
+const topSellerBooks = db.books.filter((b) => b.isBestSeller).map(dbBook);
 
-const mockComboBooks = [
-  { id: 13, title: 'Combo 2 Cuốn Giáo Dục Tiền Tiểu Học', oldPrice: '120,000đ', newPrice: '96,000đ', discount: '-20%' },
-  { id: 14, title: 'Combo Trí Tuệ Xúc Cảm Dành Cho... ', oldPrice: '250,000đ', newPrice: '200,000đ', discount: '-20%' },
-  { id: 15, title: 'Combo Kỹ Năng Sống Cùng Con', oldPrice: '160,000đ', newPrice: '128,000đ', discount: '-20%' },
-  { id: 16, title: 'Combo Bí Quyết Chọn Đồ Chơi Cho Bé', oldPrice: '90,000đ', newPrice: '72,000đ', discount: '-20%' },
-  { id: 17, title: 'Combo Quản Lý Sức Khỏe Gia Đình', oldPrice: '210,000đ', newPrice: '168,000đ', discount: '-20%' }
-];
+// Sidebar: sách mới nhất
+const sidebarNewBooks = db.books.filter((b) => b.isNew).slice(0, 4).map(dbBook);
 
-const mockHighlightsBooks = [
-  { id: 23, title: 'Sách: Nghệ Thuật Sống Khỏe Mỗi Ngày', oldPrice: '110,000đ', newPrice: '88,000đ', discount: '-20%' },
-  { id: 24, title: 'Sách: Thói Quen Nhỏ Sức Mạnh Lớn', oldPrice: '135,000đ', newPrice: '108,000đ', discount: '-20%' },
-  { id: 25, title: 'Sách: Đi Tìm Lẽ Sống Tương Lai', oldPrice: '180,000đ', newPrice: '144,000đ', discount: '-20%' },
-  { id: 26, title: 'Sách: Hành Trình Của Tâm Hồn Bình Yên', oldPrice: '125,000đ', newPrice: '100,000đ', discount: '-20%' },
-  { id: 27, title: 'Sách: Dám Bị Ghét, Dám Thành Công', oldPrice: '150,000đ', newPrice: '120,000đ', discount: '-20%' }
-];
+// Combo (kinh doanh - category 4)
+const comboBooks = byCategory(4);
 
-const mockLiteratureBooks = [
-  { id: 28, title: 'Tôi Thấy Hoa Vàng Trên Cỏ Xanh', oldPrice: '150,000đ', newPrice: '120,000đ', discount: '-20%' },
-  { id: 29, title: 'Cho Tôi Xin Một Vé Đi Tuổi Thơ', oldPrice: '125,000đ', newPrice: '100,000đ', discount: '-20%' },
-  { id: 30, title: 'Cây Cam Ngọt Của Tôi', oldPrice: '138,000đ', newPrice: '110,400đ', discount: '-20%' },
-  { id: 31, title: 'Sự Im Lặng Của Bầy Cừu', oldPrice: '180,000đ', newPrice: '144,000đ', discount: '-20%' },
-  { id: 32, title: 'Nhà Giả Kim (Bản Kỷ Niệm)', oldPrice: '110,000đ', newPrice: '88,000đ', discount: '-20%' }
-];
+// Tiêu điểm (kỹ năng - category 3)
+const highlightBooks = byCategory(3);
 
-const mockReferenceBooks = [
-  { id: 33, title: 'Combo Luyện Thi THPT Quốc Gia', oldPrice: '300,000đ', newPrice: '240,000đ', discount: '-20%' },
-  { id: 34, title: 'Giải Tích Đại Cương Chuyên Sâu', oldPrice: '120,000đ', newPrice: '96,000đ', discount: '-20%' },
-  { id: 35, title: 'Từ Điển Anh-Việt Bỏ Túi', oldPrice: '85,000đ', newPrice: '68,000đ', discount: '-20%' },
-  { id: 36, title: 'Luyện Siêu Trí Nhớ Từ Vựng Tiếng Anh', oldPrice: '200,000đ', newPrice: '160,000đ', discount: '-20%' },
-  { id: 37, title: 'Hack Não 1500 Từ Vựng Tiếng Anh', oldPrice: '450,000đ', newPrice: '360,000đ', discount: '-20%' }
-];
+// Các section chính
+const skillBooks     = byCategory(3);   // Kỹ năng
+const kidsBooks      = byCategory(2);   // Thiếu nhi
+const literatureBooks = byCategory(6);  // Văn học
+const referenceBooks  = byCategory(7);  // Tham khảo
+const mangaBooks      = byCategory(10); // Manga
 
-const mockMangaBooks = [
-  { id: 38, title: 'Chú Thuật Hồi Chiến (Jujutsu Kaisen)', oldPrice: '45,000đ', newPrice: '36,000đ', discount: '-20%' },
-  { id: 39, title: 'Thám Tử Lừng Danh Conan', oldPrice: '25,000đ', newPrice: '20,000đ', discount: '-20%' },
-  { id: 40, title: 'Thanh Gươm Diệt Quỷ (Demon Slayer)', oldPrice: '40,000đ', newPrice: '32,000đ', discount: '-20%' },
-  { id: 41, title: 'Học Viện Siêu Anh Hùng', oldPrice: '35,000đ', newPrice: '28,000đ', discount: '-20%' },
-  { id: 42, title: 'One Piece - Đảo Hải Tặc', oldPrice: '30,000đ', newPrice: '24,000đ', discount: '-20%' }
-];
-
+// ── Components ───────────────────────────────────────────────────────────────
 const ProductCard = ({ book }) => (
   <div className="product-card">
     <div className="product-image-wrapper">
-      {/* Hình ảnh sẽ được đặt ở đây: <img src={book.img} /> */}
+      {/* <img src={book.image} alt={book.title} /> */}
     </div>
     <div className="product-title">{book.title}</div>
     <div className="product-price-row">
@@ -99,54 +67,48 @@ const SidebarProductCard = ({ book }) => (
 
 const BookSliderSection = ({ title, books }) => {
   const sliderRef = useRef(null);
-  const [filter, setFilter] = useState('default'); // 'default', 'low', 'high'
+  const [filter, setFilter] = useState('default');
 
   const scrollSlider = (direction) => {
     if (sliderRef.current) {
-      const scrollAmount = 300;
-      sliderRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+      sliderRef.current.scrollBy({
+        left: direction === 'left' ? -300 : 300,
+        behavior: 'smooth',
+      });
     }
   };
 
-  const sortedBooks = React.useMemo(() => {
+  const sortedBooks = useMemo(() => {
     if (filter === 'default') return books;
-    const sorted = [...books].sort((a, b) => {
-      const priceA = parseInt(a.newPrice.replace(/[^0-9]/g, ''), 10);
-      const priceB = parseInt(b.newPrice.replace(/[^0-9]/g, ''), 10);
-      if (filter === 'low') return priceA - priceB;
-      if (filter === 'high') return priceB - priceA;
-      return 0;
+    return [...books].sort((a, b) => {
+      const pa = parseInt(a.newPrice.replace(/[^0-9]/g, ''), 10);
+      const pb = parseInt(b.newPrice.replace(/[^0-9]/g, ''), 10);
+      return filter === 'low' ? pa - pb : pb - pa;
     });
-    return sorted;
   }, [books, filter]);
+
+  const filters = [
+    { key: 'default', label: 'Mới/Nổi bật' },
+    { key: 'bestseller', label: 'Bán chạy nhất' },
+    { key: 'low', label: 'Giá thấp' },
+    { key: 'high', label: 'Giá cao' },
+  ];
 
   return (
     <div className="section-wrapper">
       <div className="section-header">
         <h2 className="section-title">{title}</h2>
         <div className="section-filters">
-          <span 
-            className={`filter-link ${filter === 'default' ? 'active' : ''}`} 
-            style={filter === 'default' ? {color: '#00a650', fontWeight: 'bold'} : {}}
-            onClick={() => setFilter('default')}
-          >
-            Mới/Nổi bật
-          </span>
-          <span className="filter-link" style={{ color: '#333', fontWeight: 600 }}>Bán chạy nhất</span>
-          <span 
-            className={`filter-link ${filter === 'low' ? 'active' : ''}`} 
-            style={filter === 'low' ? {color: '#00a650', fontWeight: 'bold'} : {}}
-            onClick={() => setFilter('low')}
-          >
-            Giá thấp
-          </span>
-          <span 
-            className={`filter-link ${filter === 'high' ? 'active' : ''}`} 
-            style={filter === 'high' ? {color: '#00a650', fontWeight: 'bold'} : {}}
-            onClick={() => setFilter('high')}
-          >
-            Giá cao
-          </span>
+          {filters.map((f) => (
+            <span
+              key={f.key}
+              className={`filter-link ${filter === f.key ? 'active' : ''}`}
+              style={filter === f.key ? { color: '#00a650', fontWeight: 'bold' } : {}}
+              onClick={() => setFilter(f.key)}
+            >
+              {f.label}
+            </span>
+          ))}
         </div>
       </div>
       <div className="slider-wrapper">
@@ -154,7 +116,7 @@ const BookSliderSection = ({ title, books }) => {
           <FaChevronLeft />
         </button>
         <div className="slider-container" ref={sliderRef}>
-          {sortedBooks.map(book => (
+          {sortedBooks.map((book) => (
             <div key={book.id} className="slider-item">
               <ProductCard book={book} />
             </div>
@@ -168,88 +130,126 @@ const BookSliderSection = ({ title, books }) => {
   );
 };
 
+// ── SidebarPaginatedBlock: nút < > chuyển trang ──────────────────────────────
+const PAGE_SIZE = 3;
+
+const SidebarPaginatedBlock = ({ title, books, style }) => {
+  const [page, setPage] = useState(0);
+  const totalPages = Math.ceil(books.length / PAGE_SIZE);
+  const visibleBooks = books.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
+
+  const prev = () => setPage((p) => Math.max(0, p - 1));
+  const next = () => setPage((p) => Math.min(totalPages - 1, p + 1));
+
+  return (
+    <div className="section-wrapper" style={{ padding: '0', overflow: 'hidden', ...style }}>
+      <div style={{
+        backgroundColor: '#e9ecef',
+        padding: '12px 15px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <div className="section-title" style={{ margin: 0, fontSize: '13px' }}>{title}</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <button
+            onClick={prev}
+            disabled={page === 0}
+            style={{
+              background: 'none',
+              border: '1px solid #ccc',
+              borderRadius: '3px',
+              width: '24px',
+              height: '24px',
+              cursor: page === 0 ? 'not-allowed' : 'pointer',
+              color: page === 0 ? '#ccc' : '#555',
+              fontWeight: 'bold',
+              fontSize: '13px',
+              lineHeight: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.2s',
+            }}
+            title="Trang trước"
+          >
+            ‹
+          </button>
+          <span style={{ fontSize: '11px', color: '#999', minWidth: '30px', textAlign: 'center' }}>
+            {page + 1}/{totalPages}
+          </span>
+          <button
+            onClick={next}
+            disabled={page >= totalPages - 1}
+            style={{
+              background: 'none',
+              border: '1px solid #ccc',
+              borderRadius: '3px',
+              width: '24px',
+              height: '24px',
+              cursor: page >= totalPages - 1 ? 'not-allowed' : 'pointer',
+              color: page >= totalPages - 1 ? '#ccc' : '#555',
+              fontWeight: 'bold',
+              fontSize: '13px',
+              lineHeight: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.2s',
+            }}
+            title="Trang sau"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+      <div style={{ padding: '10px 10px 0 10px' }}>
+        {visibleBooks.map((book) => (
+          <SidebarProductCard key={book.id} book={book} />
+        ))}
+        <div className="btn-see-more-sidebar">Xem tất cả</div>
+      </div>
+    </div>
+  );
+};
+
+// ── Home ─────────────────────────────────────────────────────────────────────
 function Home() {
   const topBooksRef = useRef(null);
-  const [showAllCombos, setShowAllCombos] = useState(false);
-  const [showAllHighlights, setShowAllHighlights] = useState(false);
 
   const scrollSlider = (ref, direction) => {
     if (ref.current) {
-      const scrollAmount = 300;
-      ref.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+      ref.current.scrollBy({ left: direction === 'left' ? -300 : 300, behavior: 'smooth' });
     }
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
     <div className="home-container">
 
-      {/* Cột Sidebar Trái - Ẩn trên thiết bị di động */}
+      {/* Cột Sidebar Trái */}
       <div className="home-sidebar">
-        {/* Khối 1: SÁCH MỚI LÊN KỆ */}
-        <div className="section-wrapper" style={{ padding: '0', overflow: 'hidden', marginBottom: '20px' }}>
-          <div style={{ backgroundColor: '#e9ecef', padding: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div className="section-title" style={{ margin: 0, fontSize: '13px' }}>SÁCH MỚI LÊN KỆ</div>
-            <div style={{ color: '#888', fontWeight: 'bold' }}>&lt; &gt;</div>
-          </div>
-          <div style={{ padding: '10px 10px 0 10px' }}>
-            {mockSidebarBooks.map(book => (
-              <SidebarProductCard key={book.id} book={book} />
-            ))}
-            <div className="btn-see-more-sidebar">Xem thêm</div>
-          </div>
-        </div>
-
-        {/* Khối 2: COMBO BÁN CHẠY */}
-        <div className="section-wrapper" style={{ padding: '0', overflow: 'hidden', marginBottom: '20px' }}>
-          <div style={{ backgroundColor: '#e9ecef', padding: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div className="section-title" style={{ margin: 0, fontSize: '13px' }}>COMBO BÁN CHẠY</div>
-            <div style={{ color: '#888', fontWeight: 'bold' }}>&lt; &gt;</div>
-          </div>
-          <div style={{ padding: '10px 10px 0 10px' }}>
-            {mockComboBooks.slice(0, showAllCombos ? mockComboBooks.length : 3).map(book => (
-              <SidebarProductCard key={book.id} book={book} />
-            ))}
-            {mockComboBooks.length > 3 && (
-              <div 
-                className="btn-see-more-sidebar" 
-                onClick={() => setShowAllCombos(!showAllCombos)}
-              >
-                {showAllCombos ? 'Ẩn bớt' : 'Xem thêm'}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Khối 3: TIÊU ĐIỂM SÁCH HAY */}
-        <div className="section-wrapper" style={{ padding: '0', overflow: 'hidden' }}>
-          <div style={{ backgroundColor: '#e9ecef', padding: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div className="section-title" style={{ margin: 0, fontSize: '13px' }}>TIÊU ĐIỂM SÁCH HAY</div>
-            <div style={{ color: '#888', fontWeight: 'bold' }}>&lt; &gt;</div>
-          </div>
-          <div style={{ padding: '10px 10px 0 10px' }}>
-            {mockHighlightsBooks.slice(0, showAllHighlights ? mockHighlightsBooks.length : 3).map(book => (
-              <SidebarProductCard key={book.id} book={book} />
-            ))}
-            {mockHighlightsBooks.length > 3 && (
-              <div 
-                className="btn-see-more-sidebar" 
-                onClick={() => setShowAllHighlights(!showAllHighlights)}
-              >
-                {showAllHighlights ? 'Ẩn bớt' : 'Xem thêm'}
-              </div>
-            )}
-          </div>
-        </div>
+        <SidebarPaginatedBlock
+          title="SÁCH MỚI LÊN KỆ"
+          books={sidebarNewBooks}
+          style={{ marginBottom: '20px' }}
+        />
+        <SidebarPaginatedBlock
+          title="SÁCH KINH DOANH"
+          books={comboBooks}
+          style={{ marginBottom: '20px' }}
+        />
+        <SidebarPaginatedBlock
+          title="TIÊU ĐIỂM SÁCH HAY"
+          books={highlightBooks}
+        />
       </div>
 
       {/* Nội Dung Chính */}
       <div className="home-main">
 
-        {/* Mục: Top Sách Bán Chạy */}
+        {/* Top Sách Bán Chạy */}
         <div className="section-wrapper">
           <div className="section-header">
             <h2 className="section-title">TOP SÁCH BÁN CHẠY</h2>
@@ -259,7 +259,7 @@ function Home() {
               <FaChevronLeft />
             </button>
             <div className="slider-container" ref={topBooksRef}>
-              {mockBooks.map(book => (
+              {topSellerBooks.map((book) => (
                 <div key={book.id} className="slider-item">
                   <ProductCard book={book} />
                 </div>
@@ -271,30 +271,20 @@ function Home() {
           </div>
           <div className="see-more-link">Xem tất cả</div>
         </div>
-        {/* Mục: Các Thể Loại Sách Sử Dụng Component Tái Sử Dụng Gồm Chức Năng Lọc Giá */}
-        <BookSliderSection title="SÁCH KĨ NĂNG SỐNG" books={mockSkillBooks} />
-        <BookSliderSection title="SÁCH THIẾU NHI" books={mockKidsBooks} />
-        <BookSliderSection title="SÁCH VĂN HỌC" books={mockLiteratureBooks} />
-        <BookSliderSection title="SÁCH THAM KHẢO" books={mockReferenceBooks} />
-        <BookSliderSection title="MANGA - COMIC" books={mockMangaBooks} />
+
+        <BookSliderSection title="SÁCH KĨ NĂNG SỐNG"  books={skillBooks} />
+        <BookSliderSection title="SÁCH THIẾU NHI"      books={kidsBooks} />
+        <BookSliderSection title="SÁCH VĂN HỌC"        books={literatureBooks} />
+        <BookSliderSection title="SÁCH THAM KHẢO"      books={referenceBooks} />
+        <BookSliderSection title="MANGA - COMIC"        books={mangaBooks} />
 
       </div>
 
-      {/* Các Nút Hành Động Trôi Nổi (FAB) */}
+      {/* FAB */}
       <div className="floating-actions">
-        <div className="fab fab-cart" title="Giỏ Hàng">
-          <FaShoppingCart />
-        </div>
-        <div className="fab fab-top" title="Lên Đầu Trang" onClick={scrollToTop}>
-          <FaArrowUp />
-        </div>
-        <a 
-          href="[Điền link Facebook sau]" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="fab fab-facebook" 
-          title="Tới Trang Facebook"
-        >
+        <div className="fab fab-cart" title="Giỏ Hàng"><FaShoppingCart /></div>
+        <div className="fab fab-top" title="Lên Đầu Trang" onClick={scrollToTop}><FaArrowUp /></div>
+        <a href="[Điền link Facebook sau]" target="_blank" rel="noopener noreferrer" className="fab fab-facebook" title="Tới Trang Facebook">
           <FaFacebook />
         </a>
       </div>

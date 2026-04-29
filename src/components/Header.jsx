@@ -77,23 +77,24 @@ function Header() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto main-nav">
               <Nav.Link as={Link} to="/" className="nav-link-custom">Trang chủ</Nav.Link>
+              <Nav.Link as={Link} to="/category" className="nav-link-custom">Danh mục</Nav.Link>
               
               <NavDropdown title="Thể loại" id="basic-nav-dropdown" className="category-dropdown">
-                <NavDropdown.Item as={Link} to="#sach-mam-non">Sách mầm non</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="#sach-thieu-nhi">Sách thiếu nhi</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="#sach-ki-nang">Sách kĩ năng</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="#sach-kinh-doanh">Sách kinh doanh</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="#sach-me-va-be">Sách mẹ và bé</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="#sach-van-hoc">Sách văn học</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="#sach-tham-khao">Sách tham khảo</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/category/sach-mam-non">Sách mầm non</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/category/sach-thieu-nhi">Sách thiếu nhi</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/category/sach-ki-nang">Sách kĩ năng</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/category/sach-kinh-doanh">Sách kinh doanh</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/category/sach-me-va-be">Sách mẹ và bé</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/category/sach-van-hoc">Sách văn học</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/category/sach-tham-khao">Sách tham khảo</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item as={Link} to="#notebook">Notebook</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="#truyen">Truyện</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="#manga">Manga</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/category/notebook">Notebook</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/category/truyen">Truyện</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/category/manga">Manga</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item as={Link} to="#top-best-seller" style={{color: '#ff6b6b', fontWeight: '600'}}>Top best seller</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="#sach-moi" style={{color: '#20c997', fontWeight: '600'}}>Sách mới</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="#sach-sap-phat-hanh" style={{color: '#339af0', fontWeight: '600'}}>Sách sắp phát hành</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/category/top-best-seller" style={{color: '#ff6b6b', fontWeight: '600'}}>Top best seller</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/category/sach-moi" style={{color: '#20c997', fontWeight: '600'}}>Sách mới</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/category/sach-sap-phat-hanh" style={{color: '#339af0', fontWeight: '600'}}>Sách sắp phát hành</NavDropdown.Item>
               </NavDropdown>
 
               {/* Extras links if needed in future */}
