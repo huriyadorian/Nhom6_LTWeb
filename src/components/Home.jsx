@@ -1,6 +1,6 @@
 import React, { useRef, useState, useMemo } from 'react';
 import { FaShoppingCart, FaArrowUp, FaChevronLeft, FaChevronRight, FaFacebook } from 'react-icons/fa';
-import db from '../database.json';
+import { getBooks, getBooksByCategory } from '../bookStore';
 import './Home.css';
 
 // ── Helper ──────────────────────────────────────────────────────────────────
@@ -14,35 +14,24 @@ const dbBook = (b) => ({
   discount: `-${b.discount}%`,
 });
 
-// ── Lấy sách theo category_id từ DB ─────────────────────────────────────────
+// ── Helper lấy sách theo category (luôn gọi để lấy data mới nhất) ────────────
 const byCategory = (catId) =>
-  db.books.filter((b) => b.category_id === catId).map(dbBook);
-
-// ── Dữ liệu cho từng section ─────────────────────────────────────────────────
-// Top bán chạy: isBestSeller = true
-const topSellerBooks = db.books.filter((b) => b.isBestSeller).map(dbBook);
-
-// Sidebar: sách mới nhất
-const sidebarNewBooks = db.books.filter((b) => b.isNew).slice(0, 4).map(dbBook);
-
-// Combo (kinh doanh - category 4)
-const comboBooks = byCategory(4);
-
-// Tiêu điểm (kỹ năng - category 3)
-const highlightBooks = byCategory(3);
-
-// Các section chính
-const skillBooks     = byCategory(3);   // Kỹ năng
-const kidsBooks      = byCategory(2);   // Thiếu nhi
-const literatureBooks = byCategory(6);  // Văn học
-const referenceBooks  = byCategory(7);  // Tham khảo
-const mangaBooks      = byCategory(10); // Manga
+  getBooksByCategory(catId).map(dbBook);
 
 // ── Components ───────────────────────────────────────────────────────────────
 const ProductCard = ({ book }) => (
   <div className="product-card">
     <div className="product-image-wrapper">
-      {/* <img src={book.image} alt={book.title} /> */}
+      {book.image ? (
+        <img
+          src={book.image}
+          alt={book.title}
+          className="product-img"
+          onError={(e) => { e.target.onerror = null; e.target.src = ''; e.target.style.display = 'none'; e.target.parentNode.classList.add('img-fallback'); }}
+        />
+      ) : (
+        <div className="img-placeholder">📚</div>
+      )}
     </div>
     <div className="product-title">{book.title}</div>
     <div className="product-price-row">
@@ -216,6 +205,17 @@ const SidebarPaginatedBlock = ({ title, books, style }) => {
 // ── Home ─────────────────────────────────────────────────────────────────────
 function Home() {
   const topBooksRef = useRef(null);
+
+  // Lấy dữ liệu từ bookStore (luôn đọc mới nhất từ localStorage)
+  const topSellerBooks   = useMemo(() => getBooks().filter((b) => b.isBestSeller).map(dbBook), []);
+  const sidebarNewBooks  = useMemo(() => getBooks().filter((b) => b.isNew).slice(0, 4).map(dbBook), []);
+  const comboBooks       = useMemo(() => byCategory(4), []);
+  const highlightBooks   = useMemo(() => byCategory(3), []);
+  const skillBooks       = useMemo(() => byCategory(3), []);
+  const kidsBooks        = useMemo(() => byCategory(2), []);
+  const literatureBooks  = useMemo(() => byCategory(6), []);
+  const referenceBooks   = useMemo(() => byCategory(7), []);
+  const mangaBooks       = useMemo(() => byCategory(10), []);
 
   const scrollSlider = (ref, direction) => {
     if (ref.current) {

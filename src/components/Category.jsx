@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { FaChevronRight, FaShoppingCart, FaArrowUp, FaFacebook } from 'react-icons/fa';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import db from '../database.json';
+import { getBooks, categories, publishers } from '../bookStore';
 import './Category.css';
 
 // ── Helper ───────────────────────────────────────────────────────────────────
@@ -11,7 +11,16 @@ const fmt = (price) => (price ? price.toLocaleString('vi-VN') + 'đ' : '');
 const ProductCard = ({ book }) => (
   <div className="cat-product-card">
     <div className="cat-product-image-wrapper">
-      {/* <img src={book.image} alt={book.title} /> */}
+      {book.image ? (
+        <img
+          src={book.image}
+          alt={book.title}
+          className="cat-product-img"
+          onError={(e) => { e.target.onerror = null; e.target.src = ''; e.target.style.display = 'none'; e.target.parentNode.classList.add('cat-img-fallback'); }}
+        />
+      ) : (
+        <div className="cat-img-placeholder">📚</div>
+      )}
     </div>
     <div className="cat-product-title">{book.title}</div>
     <div className="cat-product-price-row">
@@ -85,7 +94,7 @@ function Category() {
 
   // Tìm danh mục hiện tại theo slug (chỉ khi không phải slug đặc biệt)
   const activeCat = !specialSlug && slug
-    ? db.categories.find((c) => c.slug === slug) || null
+    ? categories.find((c) => c.slug === slug) || null
     : null;
 
   // Filter: nhà xuất bản & giá
@@ -115,9 +124,9 @@ function Category() {
     }
   };
 
-  // Sách đã lọc
+  // Sách đã lọc — đọc từ bookStore (luôn lấy dữ liệu mới nhất từ localStorage)
   const filteredBooks = useMemo(() => {
-    return db.books.filter((b) => {
+    return getBooks().filter((b) => {
       const specialOk = !specialSlug || specialSlug.filter(b);
       const catOk     = specialSlug ? true : (!activeCat || b.category_id === activeCat.id);
       const pubOk     = selectedPublishers.length === 0 || selectedPublishers.includes(b.publisher_id);
@@ -128,12 +137,11 @@ function Category() {
   }, [activeCat, specialSlug, selectedPublishers, selectedPriceRange]);
 
   // Danh mục sẽ render trong main
-  // Nếu là special slug: gom tất cả sách đã lọc vào 1 block
   const categoriesToShow = activeCat
-    ? db.categories.filter((c) => c.id === activeCat.id)
+    ? categories.filter((c) => c.id === activeCat.id)
     : specialSlug
-      ? [] // sẽ render riêng bên dưới
-      : db.categories;
+      ? []
+      : categories;
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -169,8 +177,8 @@ function Category() {
                 <span>Tất cả</span>
               </li>
 
-              {/* Từng danh mục — dùng Link để URL thay đổi */}
-              {db.categories.map((cat) => (
+              {/* Từng danh mục */}
+              {categories.map((cat) => (
                 <li
                   key={cat.id}
                   className={`cat-sidebar-item ${activeCat?.id === cat.id ? 'active' : ''}`}
@@ -195,7 +203,7 @@ function Category() {
             <div className="cat-filter-group">
               <h3 className="cat-filter-title">NHÀ XUẤT BẢN</h3>
               <div className="cat-sidebar-filter-content">
-                {db.publishers.map((pub) => (
+                {publishers.map((pub) => (
                   <label key={pub.id} className="cat-filter-checkbox">
                     <input
                       type="checkbox"

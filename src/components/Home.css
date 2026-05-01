@@ -104,10 +104,27 @@
   position: relative;
 }
 
-.product-image-wrapper img {
+.product-image-wrapper img,
+.product-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-img {
+  transform: scale(1.04);
+}
+
+/* Placeholder khi không có ảnh */
+.img-placeholder {
+  font-size: 48px;
+  opacity: 0.3;
+}
+
+/* Fallback khi ảnh lỗi */
+.img-fallback {
+  background-color: #f0f0f0;
 }
 
 .sidebar-product {
