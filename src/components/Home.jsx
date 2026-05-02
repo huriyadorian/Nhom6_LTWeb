@@ -1,5 +1,6 @@
 import React, { useRef, useState, useMemo } from 'react';
 import { FaShoppingCart, FaArrowUp, FaChevronLeft, FaChevronRight, FaFacebook } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { getBooks, getBooksByCategory } from '../bookStore';
 import './Home.css';
 
@@ -20,26 +21,28 @@ const byCategory = (catId) =>
 
 // ── Components ───────────────────────────────────────────────────────────────
 const ProductCard = ({ book }) => (
-  <div className="product-card">
-    <div className="product-image-wrapper">
-      {book.image ? (
-        <img
-          src={book.image}
-          alt={book.title}
-          className="product-img"
-          onError={(e) => { e.target.onerror = null; e.target.src = ''; e.target.style.display = 'none'; e.target.parentNode.classList.add('img-fallback'); }}
-        />
-      ) : (
-        <div className="img-placeholder">📚</div>
-      )}
+  <Link to={`/product/${book.id}`} className="home-product-card-link">
+    <div className="product-card">
+      <div className="product-image-wrapper">
+        {book.image ? (
+          <img
+            src={book.image}
+            alt={book.title}
+            className="product-img"
+            onError={(e) => { e.target.onerror = null; e.target.src = ''; e.target.style.display = 'none'; e.target.parentNode.classList.add('img-fallback'); }}
+          />
+        ) : (
+          <div className="img-placeholder">📚</div>
+        )}
+      </div>
+      <div className="product-title">{book.title}</div>
+      <div className="product-price-row">
+        <span className="price-original">{book.oldPrice}</span>
+        <span className="price-discounted">{book.newPrice}</span>
+        <span className="discount-badge">{book.discount}</span>
+      </div>
     </div>
-    <div className="product-title">{book.title}</div>
-    <div className="product-price-row">
-      <span className="price-original">{book.oldPrice}</span>
-      <span className="price-discounted">{book.newPrice}</span>
-      <span className="discount-badge">{book.discount}</span>
-    </div>
-  </div>
+  </Link>
 );
 
 const SidebarProductCard = ({ book }) => (

@@ -74,6 +74,14 @@
   color: #007bff;
 }
 
+/* Link bọc ProductCard — xóa underline */
+.home-product-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 100%;
+}
+
 /* Thẻ Sản Phẩm (Product Card) */
 .product-card {
   display: flex;

@@ -286,7 +286,14 @@
   }
 }
 
-/* Product Card reused-ish */
+/* Link bọc ProductCard — xóa underline */
+.cat-product-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* Product Card */
 .cat-product-card {
   padding: 10px;
   transition: transform 0.2s, box-shadow 0.2s;

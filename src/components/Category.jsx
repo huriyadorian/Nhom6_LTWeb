@@ -9,26 +9,28 @@ const fmt = (price) => (price ? price.toLocaleString('vi-VN') + 'đ' : '');
 
 // ── ProductCard ───────────────────────────────────────────────────────────────
 const ProductCard = ({ book }) => (
-  <div className="cat-product-card">
-    <div className="cat-product-image-wrapper">
-      {book.image ? (
-        <img
-          src={book.image}
-          alt={book.title}
-          className="cat-product-img"
-          onError={(e) => { e.target.onerror = null; e.target.src = ''; e.target.style.display = 'none'; e.target.parentNode.classList.add('cat-img-fallback'); }}
-        />
-      ) : (
-        <div className="cat-img-placeholder">📚</div>
-      )}
+  <Link to={`/product/${book.id}`} className="cat-product-card-link">
+    <div className="cat-product-card">
+      <div className="cat-product-image-wrapper">
+        {book.image ? (
+          <img
+            src={book.image}
+            alt={book.title}
+            className="cat-product-img"
+            onError={(e) => { e.target.onerror = null; e.target.src = ''; e.target.style.display = 'none'; e.target.parentNode.classList.add('cat-img-fallback'); }}
+          />
+        ) : (
+          <div className="cat-img-placeholder">📚</div>
+        )}
+      </div>
+      <div className="cat-product-title">{book.title}</div>
+      <div className="cat-product-price-row">
+        <span className="cat-price-original">{fmt(book.oldPrice)}</span>
+        <span className="cat-price-discounted">{fmt(book.newPrice)}</span>
+        <span className="cat-discount-badge">-{book.discount}%</span>
+      </div>
     </div>
-    <div className="cat-product-title">{book.title}</div>
-    <div className="cat-product-price-row">
-      <span className="cat-price-original">{fmt(book.oldPrice)}</span>
-      <span className="cat-price-discounted">{fmt(book.newPrice)}</span>
-      <span className="cat-discount-badge">-{book.discount}%</span>
-    </div>
-  </div>
+  </Link>
 );
 
 // ── CategoryBlock ─────────────────────────────────────────────────────────────

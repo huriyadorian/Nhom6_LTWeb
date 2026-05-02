@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Category from './components/Category';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
+import ProductDetail from './components/ProductDetail';
 
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -23,6 +24,7 @@ function App() {
             <Header />
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/category" element={<Category />} />
               <Route path="/category/:slug" element={<Category />} />
               <Route path="/contact" element={<Contact />} />
