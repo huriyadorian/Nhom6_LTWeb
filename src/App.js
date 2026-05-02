@@ -6,6 +6,7 @@ import Category from './components/Category';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
 import ProductDetail from './components/ProductDetail';
+import Cart from './components/Cart';
 
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -25,6 +26,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/product/:id" element={<ProductDetail />} />
+              <Route path="/cart" element={<Cart />} />
               <Route path="/category" element={<Category />} />
               <Route path="/category/:slug" element={<Category />} />
               <Route path="/contact" element={<Contact />} />

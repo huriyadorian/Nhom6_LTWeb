@@ -15,6 +15,25 @@ function Header() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [searchValue, setSearchValue] = useState("");
+  const [cartCount, setCartCount] = useState(0);
+
+  // Cập nhật số lượng giỏ hàng khi localStorage thay đổi
+  const syncCartCount = () => {
+    try {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      setCartCount(cart.reduce((s, i) => s + (i.qty || 1), 0));
+    } catch { setCartCount(0); }
+  };
+
+  useEffect(() => {
+    syncCartCount();
+    window.addEventListener('cartUpdated', syncCartCount);
+    window.addEventListener('storage', syncCartCount);
+    return () => {
+      window.removeEventListener('cartUpdated', syncCartCount);
+      window.removeEventListener('storage', syncCartCount);
+    };
+  }, []);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -56,10 +75,10 @@ function Header() {
         </div>
 
         <div className="header-actions">
-          <div className="action-icon-wrapper" title="Giỏ hàng">
+          <Link to="/cart" className="action-icon-wrapper" title="Giỏ hàng" style={{ textDecoration: 'none', color: 'inherit' }}>
             <FaShoppingCart size={20} />
-            <span className="cart-badge">0</span>
-          </div>
+            <span className="cart-badge">{cartCount}</span>
+          </Link>
           <div 
             className="action-icon-wrapper" 
             title="Tài khoản"

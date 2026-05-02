@@ -239,7 +239,7 @@ function ProductDetail() {
 
       {/* FAB */}
       <div className="floating-actions">
-        <div className="fab fab-cart" title="Giỏ Hàng" onClick={handleAddToCart}><FaShoppingCart /></div>
+        <Link to="/cart" className="fab fab-cart" title="Giỏ Hàng"><FaShoppingCart /></Link>
         <div className="fab fab-top" title="Lên Đầu Trang" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}><FaArrowUp /></div>
         <a href="[Điền link Facebook sau]" target="_blank" rel="noopener noreferrer" className="fab fab-facebook" title="Facebook">
           <FaFacebook />

@@ -12,11 +12,11 @@ function Footer() {
           <ul className="footer-links contact-info">
             <li>
               <FaPhoneAlt className="footer-icon" />
-              <span>Hotline: <span className="highlight-text">[Điền số điện thoại sau]</span></span>
+              <span>Hotline: <span className="highlight-text">[035xxxxxxx]</span></span>
             </li>
             <li>
               <FaEnvelope className="footer-icon" />
-              <span>Email: <span className="highlight-text">[Điền email sau]</span></span>
+              <span>Email: <span className="highlight-text">[XXX@gmail.com]</span></span>
             </li>
             <li>
               <FaMapMarkerAlt className="footer-icon" />

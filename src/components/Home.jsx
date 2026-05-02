@@ -285,7 +285,7 @@ function Home() {
 
       {/* FAB */}
       <div className="floating-actions">
-        <div className="fab fab-cart" title="Giỏ Hàng"><FaShoppingCart /></div>
+        <Link to="/cart" className="fab fab-cart" title="Giỏ Hàng"><FaShoppingCart /></Link>
         <div className="fab fab-top" title="Lên Đầu Trang" onClick={scrollToTop}><FaArrowUp /></div>
         <a href="[Điền link Facebook sau]" target="_blank" rel="noopener noreferrer" className="fab fab-facebook" title="Tới Trang Facebook">
           <FaFacebook />
