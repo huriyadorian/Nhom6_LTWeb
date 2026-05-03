@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaAngleRight, FaFacebook } from 'react-icons/fa';
 import './Footer.css';
 
@@ -35,9 +36,9 @@ function Footer() {
         <div className="footer-col">
           <h3 className="footer-title">DANH MỤC PHỔ BIẾN</h3>
           <ul className="footer-links">
-            <li><FaAngleRight className="footer-bullet" /> Sản phẩm mới về</li>
-            <li><FaAngleRight className="footer-bullet" /> Sản phẩm bán chạy</li>
-            <li><FaAngleRight className="footer-bullet" /> Khuyến mãi</li>
+            <li><Link to="/category/sach-moi" style={{ color: 'inherit', textDecoration: 'none' }}><FaAngleRight className="footer-bullet" /> Sản phẩm mới về</Link></li>
+            <li><Link to="/category/top-best-seller" style={{ color: 'inherit', textDecoration: 'none' }}><FaAngleRight className="footer-bullet" /> Sản phẩm bán chạy</Link></li>
+            <li><Link to="/category/khuyen-mai" style={{ color: 'inherit', textDecoration: 'none' }}><FaAngleRight className="footer-bullet" /> Khuyến mãi</Link></li>
           </ul>
         </div>
 
@@ -45,9 +46,9 @@ function Footer() {
         <div className="footer-col">
           <h3 className="footer-title">HỖ TRỢ KHÁCH HÀNG</h3>
           <ul className="footer-links">
-            <li><FaAngleRight className="footer-bullet" /> Hướng dẫn mua hàng</li>
-            <li><FaAngleRight className="footer-bullet" /> Kiểm tra đơn hàng</li>
-            <li><FaAngleRight className="footer-bullet" /> Chính sách đổi trả</li>
+            <li><Link to="/policy/huong-dan-mua-hang" style={{ color: 'inherit', textDecoration: 'none' }}><FaAngleRight className="footer-bullet" /> Hướng dẫn mua hàng</Link></li>
+            <li><Link to="/cart" style={{ color: 'inherit', textDecoration: 'none' }}><FaAngleRight className="footer-bullet" /> Kiểm tra đơn hàng</Link></li>
+            <li><Link to="/policy/chinh-sach-doi-tra" style={{ color: 'inherit', textDecoration: 'none' }}><FaAngleRight className="footer-bullet" /> Chính sách đổi trả</Link></li>
           </ul>
         </div>
       </div>

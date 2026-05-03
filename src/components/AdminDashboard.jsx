@@ -138,7 +138,13 @@ function ProductModal({ book, onClose, onSave, categories, publishers }) {
             <input name="image" value={form.image || ''} onChange={handleChange} placeholder="https://... hoặc /images/books/..." className="admin-input" />
             {form.image && (
               <div className="admin-img-preview">
-                <img src={form.image} alt="Preview" onError={e => e.target.style.display='none'} />
+                <img 
+                  key={form.image}
+                  src={form.image} 
+                  alt="Preview" 
+                  onLoad={e => e.target.style.display='block'}
+                  onError={e => e.target.style.display='none'} 
+                />
               </div>
             )}
           </div>
@@ -314,8 +320,14 @@ function AdminDashboard() {
                   <td className="admin-td-center">{idx + 1}</td>
                   <td className="admin-td-center">
                     {book.image ? (
-                      <img src={book.image} alt={book.title} className="admin-book-thumb"
-                        onError={e => { e.target.onerror=null; e.target.src=''; e.target.style.display='none'; }} />
+                      <img 
+                        key={book.image}
+                        src={book.image} 
+                        alt={book.title} 
+                        className="admin-book-thumb"
+                        onLoad={e => e.target.style.display='block'}
+                        onError={e => { e.target.onerror=null; e.target.src=''; e.target.style.display='none'; }} 
+                      />
                     ) : <span className="admin-no-img">—</span>}
                   </td>
                   <td>

@@ -61,6 +61,7 @@ function ProductDetail() {
       cart.push({ id: book.id, title: book.title, image: book.image, newPrice: book.newPrice, qty });
     }
     localStorage.setItem('cart', JSON.stringify(cart));
+    window.dispatchEvent(new Event('cartUpdated')); // Báo cho Header cập nhật số lượng
     setCartMsg(`✅ Đã thêm ${qty} cuốn vào giỏ hàng!`);
     setTimeout(() => setCartMsg(''), 3000);
   };

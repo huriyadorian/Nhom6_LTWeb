@@ -94,6 +94,7 @@ function Category() {
     'top-best-seller': { label: 'Top Best Seller', filter: (b) => b.isBestSeller },
     'sach-moi':        { label: 'Sách Mới',         filter: (b) => b.isNew },
     'sach-sap-phat-hanh': { label: 'Sách Sắp Phát Hành', filter: (b) => b.isComingSoon },
+    'khuyen-mai':      { label: 'Khuyến Mãi',       filter: (b) => b.discount > 0 },
   };
 
   const specialSlug = slug && SPECIAL_SLUGS[slug] ? SPECIAL_SLUGS[slug] : null;
@@ -152,7 +153,7 @@ function Category() {
       
       return specialOk && catOk && pubOk && priceOk && searchOk;
     });
-  }, [activeCat, specialSlug, selectedPublishers, selectedPriceRange, searchQuery]);
+  }, [activeCat, specialSlug, selectedPublishers, selectedPriceRange, searchQuery, priceRanges]);
 
   // Danh mục sẽ render trong main
   const categoriesToShow = activeCat

@@ -46,15 +46,28 @@ const ProductCard = ({ book }) => (
 );
 
 const SidebarProductCard = ({ book }) => (
-  <div className="sidebar-product product-card">
-    <div className="product-image-placeholder"></div>
-    <div className="product-title" style={{ textAlign: 'left', marginTop: 15 }}>{book.title}</div>
-    <div className="product-price-row" style={{ justifyContent: 'center' }}>
-      <span className="price-original">{book.oldPrice}</span>
-      <span className="price-discounted">{book.newPrice}</span>
-      <span className="discount-badge">{book.discount}</span>
+  <Link to={`/product/${book.id}`} className="home-product-card-link">
+    <div className="sidebar-product product-card">
+      <div className="product-image-wrapper">
+        {book.image ? (
+          <img
+            src={book.image}
+            alt={book.title}
+            className="product-img"
+            onError={(e) => { e.target.onerror = null; e.target.src = ''; e.target.style.display = 'none'; e.target.parentNode.classList.add('img-fallback'); }}
+          />
+        ) : (
+          <div className="img-placeholder">📚</div>
+        )}
+      </div>
+      <div className="product-title" style={{ textAlign: 'center', marginTop: '10px' }}>{book.title}</div>
+      <div className="product-price-row" style={{ justifyContent: 'center' }}>
+        <span className="price-original">{book.oldPrice}</span>
+        <span className="price-discounted">{book.newPrice}</span>
+        {book.discount && book.discount !== '-0%' && <span className="discount-badge">{book.discount}</span>}
+      </div>
     </div>
-  </div>
+  </Link>
 );
 
 const BookSliderSection = ({ title, books }) => {
@@ -134,61 +147,22 @@ const SidebarPaginatedBlock = ({ title, books, style }) => {
   const next = () => setPage((p) => Math.min(totalPages - 1, p + 1));
 
   return (
-    <div className="section-wrapper" style={{ padding: '0', overflow: 'hidden', ...style }}>
-      <div style={{
-        backgroundColor: '#e9ecef',
-        padding: '12px 15px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-      }}>
-        <div className="section-title" style={{ margin: 0, fontSize: '13px' }}>{title}</div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+    <div className="section-wrapper sidebar-block-wrapper" style={{ padding: '0', overflow: 'hidden', ...style }}>
+      <div className="sidebar-block-header">
+        <div className="section-title sidebar-block-title">{title}</div>
+        <div className="sidebar-block-nav">
           <button
             onClick={prev}
             disabled={page === 0}
-            style={{
-              background: 'none',
-              border: '1px solid #ccc',
-              borderRadius: '3px',
-              width: '24px',
-              height: '24px',
-              cursor: page === 0 ? 'not-allowed' : 'pointer',
-              color: page === 0 ? '#ccc' : '#555',
-              fontWeight: 'bold',
-              fontSize: '13px',
-              lineHeight: 1,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'all 0.2s',
-            }}
+            className="sidebar-nav-btn"
             title="Trang trước"
           >
             ‹
           </button>
-          <span style={{ fontSize: '11px', color: '#999', minWidth: '30px', textAlign: 'center' }}>
-            {page + 1}/{totalPages}
-          </span>
           <button
             onClick={next}
             disabled={page >= totalPages - 1}
-            style={{
-              background: 'none',
-              border: '1px solid #ccc',
-              borderRadius: '3px',
-              width: '24px',
-              height: '24px',
-              cursor: page >= totalPages - 1 ? 'not-allowed' : 'pointer',
-              color: page >= totalPages - 1 ? '#ccc' : '#555',
-              fontWeight: 'bold',
-              fontSize: '13px',
-              lineHeight: 1,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'all 0.2s',
-            }}
+            className="sidebar-nav-btn"
             title="Trang sau"
           >
             ›
