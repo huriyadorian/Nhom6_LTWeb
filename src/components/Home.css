@@ -143,15 +143,11 @@
 }
 
 .sidebar-product .product-image-wrapper {
-  aspect-ratio: 1; /* Cân đối vuông góc hơn trong dải sidebar nếu cần */
+  width: 180px;
+  height: 240px;
   background-color: transparent;
-}
-.sidebar-product .product-image-placeholder {
-  width: 90%;
-  aspect-ratio: 3/4;
-  background-color: #ddd;
-  margin: 0 auto;
-  border-radius: 4px;
+  margin: 0 auto 10px auto;
+  aspect-ratio: auto;
 }
 
 .sidebar-product .product-title {

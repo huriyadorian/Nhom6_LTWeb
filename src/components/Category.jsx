@@ -108,12 +108,12 @@ function Category() {
   const [selectedPublishers, setSelectedPublishers] = useState([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState(null);
 
-  const priceRanges = [
+  const priceRanges = useMemo(() => [
     { label: 'Dưới 100,000đ',       min: 0,      max: 100000 },
     { label: '100,000đ - 200,000đ', min: 100000, max: 200000 },
     { label: '200,000đ - 300,000đ', min: 200000, max: 300000 },
     { label: 'Trên 400,000đ',       min: 400000, max: Infinity },
-  ];
+  ], []);
 
   const togglePublisher = (id) =>
     setSelectedPublishers((prev) =>

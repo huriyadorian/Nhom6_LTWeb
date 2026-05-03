@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import { FaSearch, FaUser, FaTimes, FaShoppingCart, FaSun, FaMoon, FaBook } from 'react-icons/fa';
+import { FaSearch, FaUser, FaTimes, FaShoppingCart, FaSun, FaMoon } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, signInWithPopup, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, provider } from '../firebase';
