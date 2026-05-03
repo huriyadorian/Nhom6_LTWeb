@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import { FaSearch, FaUser, FaTimes, FaShoppingCart, FaSun, FaMoon } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { FaSearch, FaUser, FaTimes, FaShoppingCart, FaSun, FaMoon, FaBook } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, signInWithPopup, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, provider } from '../firebase';
+import { getBooks, publishers } from '../bookStore';
 import './Header.css';
 
 function Header() {
@@ -15,7 +16,38 @@ function Header() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [searchValue, setSearchValue] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const navigate = useNavigate();
+  const searchRef = useRef(null);
+
+  // Lấy danh sách gợi ý tìm kiếm
+  const suggestions = useMemo(() => {
+    if (!searchValue.trim()) return [];
+    const query = searchValue.trim().toLowerCase();
+    const books = getBooks();
+    
+    const matched = books.filter(b => {
+      const pub = publishers.find(p => p.id === b.publisher_id);
+      const pubName = pub ? pub.name.toLowerCase() : '';
+      return b.title.toLowerCase().includes(query) ||
+             (b.author && b.author.toLowerCase().includes(query)) ||
+             pubName.includes(query);
+    });
+    
+    return matched.slice(0, 5); // Chỉ lấy 5 kết quả đầu
+  }, [searchValue]);
+
+  // Đóng gợi ý khi click ra ngoài
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   // Cập nhật số lượng giỏ hàng khi localStorage thay đổi
   const syncCartCount = () => {
@@ -46,9 +78,15 @@ function Header() {
   const handleSearch = (e) => {
     e.preventDefault();
     if(searchValue.trim()) {
-      // Logic block for search can go here
-      console.log("Searching for:", searchValue);
+      setShowSuggestions(false);
+      navigate(`/category?search=${encodeURIComponent(searchValue.trim())}`);
     }
+  };
+
+  const handleSuggestionClick = (bookId) => {
+    setShowSuggestions(false);
+    navigate(`/product/${bookId}`);
+    setSearchValue('');
   };
 
   return (
@@ -59,19 +97,49 @@ function Header() {
           B&B Books
         </Link>
         
-        <div className="search-bar-container">
+        <div className="search-bar-container" ref={searchRef}>
           <form onSubmit={handleSearch}>
             <input
               className="search-input"
               type="text"
               placeholder="Tìm kiếm sách, tác giả, nhà xuất bản..."
               value={searchValue}
-              onChange={e => setSearchValue(e.target.value)}
+              onChange={e => {
+                setSearchValue(e.target.value);
+                setShowSuggestions(true);
+              }}
+              onFocus={() => setShowSuggestions(true)}
             />
             <button type="submit" className="search-btn">
               <FaSearch size={18} />
             </button>
           </form>
+
+          {/* Hộp gợi ý tìm kiếm */}
+          {showSuggestions && searchValue.trim() && (
+            <div className="search-suggestions">
+              {suggestions.length > 0 ? (
+                <ul className="suggestion-list">
+                  {suggestions.map((book) => (
+                    <li key={book.id} onClick={() => handleSuggestionClick(book.id)}>
+                      {book.image ? (
+                        <img src={book.image} alt={book.title} className="suggestion-image" onError={(e) => { e.target.onerror = null; e.target.style.display = 'none'; }} />
+                      ) : null}
+                      <div className="suggestion-info">
+                        <span className="suggestion-title">{book.title}</span>
+                        {book.author && <span className="suggestion-author"> - {book.author}</span>}
+                      </div>
+                    </li>
+                  ))}
+                  <li className="suggestion-view-all" onClick={handleSearch}>
+                    Xem tất cả kết quả cho "{searchValue}"
+                  </li>
+                </ul>
+              ) : (
+                <div className="suggestion-empty">Không tìm thấy sách phù hợp</div>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="header-actions">

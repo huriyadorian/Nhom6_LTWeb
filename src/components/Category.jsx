@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { FaChevronRight, FaShoppingCart, FaArrowUp, FaFacebook } from 'react-icons/fa';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { getBooks, categories, publishers } from '../bookStore';
 import './Category.css';
 
@@ -84,6 +84,10 @@ const CategoryBlock = ({ title, books }) => {
 function Category() {
   const { slug } = useParams(); // undefined nếu ở /category, có giá trị nếu ở /category/:slug
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const searchParams = new URLSearchParams(location.search);
+  const searchQuery = searchParams.get('search') || '';
 
   // Slug đặc biệt không phải danh mục thông thường
   const SPECIAL_SLUGS = {
@@ -134,9 +138,21 @@ function Category() {
       const pubOk     = selectedPublishers.length === 0 || selectedPublishers.includes(b.publisher_id);
       const range     = priceRanges[selectedPriceRange];
       const priceOk   = !range || (b.newPrice >= range.min && b.newPrice < range.max);
-      return specialOk && catOk && pubOk && priceOk;
+      
+      let searchOk = true;
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        const publisher = publishers.find(p => p.id === b.publisher_id);
+        const pubName = publisher ? publisher.name.toLowerCase() : '';
+        searchOk = 
+          b.title.toLowerCase().includes(query) || 
+          (b.author && b.author.toLowerCase().includes(query)) ||
+          pubName.includes(query);
+      }
+      
+      return specialOk && catOk && pubOk && priceOk && searchOk;
     });
-  }, [activeCat, specialSlug, selectedPublishers, selectedPriceRange]);
+  }, [activeCat, specialSlug, selectedPublishers, selectedPriceRange, searchQuery]);
 
   // Danh mục sẽ render trong main
   const categoriesToShow = activeCat
@@ -244,18 +260,29 @@ function Category() {
         {/* ── Main Content ── */}
         <main className="cat-main">
           <div className="cat-main-header">
-            {specialSlug
-              ? specialSlug.label.toUpperCase()
-              : activeCat
-                ? activeCat.name.toUpperCase()
-                : 'TẤT CẢ SẢN PHẨM'}
+            {searchQuery
+              ? `KẾT QUẢ TÌM KIẾM CHO "${searchQuery.toUpperCase()}"`
+              : specialSlug
+                ? specialSlug.label.toUpperCase()
+                : activeCat
+                  ? activeCat.name.toUpperCase()
+                  : 'TẤT CẢ SẢN PHẨM'}
             <span style={{ fontSize: '13px', fontWeight: 400, marginLeft: '10px', color: '#888' }}>
               ({filteredBooks.length} sản phẩm)
             </span>
           </div>
 
+          {/* Kết quả tìm kiếm (khi có searchQuery) hiển thị tất cả sách tìm được */}
+          {searchQuery && filteredBooks.length > 0 && (
+            <CategoryBlock
+              key="search"
+              title={`Kết quả tìm kiếm (${filteredBooks.length})`}
+              books={filteredBooks}
+            />
+          )}
+
           {/* Slug đặc biệt: hiển thị tất cả sách trong 1 block */}
-          {specialSlug && filteredBooks.length > 0 && (
+          {!searchQuery && specialSlug && filteredBooks.length > 0 && (
             <CategoryBlock
               key="special"
               title={specialSlug.label.toUpperCase()}
@@ -264,7 +291,7 @@ function Category() {
           )}
 
           {/* Danh mục thông thường */}
-          {categoriesToShow.map((cat) => {
+          {!searchQuery && categoriesToShow.map((cat) => {
             const booksInCat = filteredBooks.filter((b) => b.category_id === cat.id);
             if (booksInCat.length === 0) return null;
             return (
