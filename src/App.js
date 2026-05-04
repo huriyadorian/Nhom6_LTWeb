@@ -3,21 +3,20 @@ import Home from './components/Home';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Category from './components/Category';
-import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
 import ProductDetail from './components/ProductDetail';
 import Cart from './components/Cart';
 import Policy from './components/Policy';
 
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Trang Admin (không có Header/Footer chung) */}
-        <Route path="/admin" element={<AdminLogin />} />
+        {/* /admin redirect về trang chủ (đăng nhập qua web) */}
+        <Route path="/admin" element={<Navigate to="/" replace />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
         {/* Trang khách hàng (có Header và Footer) */}

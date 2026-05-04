@@ -196,7 +196,7 @@ function AdminDashboard() {
   // Kiểm tra đăng nhập
   const session = JSON.parse(localStorage.getItem('adminSession') || 'null');
   useEffect(() => {
-    if (!session) navigate('/admin');
+    if (!session) navigate('/');
   }, [session, navigate]);
 
   // Lưu khi danh sách sách thay đổi
@@ -206,7 +206,7 @@ function AdminDashboard() {
 
   const handleLogout = () => {
     localStorage.removeItem('adminSession');
-    navigate('/admin');
+    navigate('/');
   };
 
   // Lọc sách theo tìm kiếm và danh mục

@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, signInWithPopup, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, provider } from '../firebase';
 import { getBooks, publishers } from '../bookStore';
+import dbData from '../database.json';
 import './Header.css';
 
 function Header() {
@@ -26,15 +27,15 @@ function Header() {
     if (!searchValue.trim()) return [];
     const query = searchValue.trim().toLowerCase();
     const books = getBooks();
-    
+
     const matched = books.filter(b => {
       const pub = publishers.find(p => p.id === b.publisher_id);
       const pubName = pub ? pub.name.toLowerCase() : '';
       return b.title.toLowerCase().includes(query) ||
-             (b.author && b.author.toLowerCase().includes(query)) ||
-             pubName.includes(query);
+        (b.author && b.author.toLowerCase().includes(query)) ||
+        pubName.includes(query);
     });
-    
+
     return matched.slice(0, 5); // Chỉ lấy 5 kết quả đầu
   }, [searchValue]);
 
@@ -77,7 +78,7 @@ function Header() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if(searchValue.trim()) {
+    if (searchValue.trim()) {
       setShowSuggestions(false);
       navigate(`/category?search=${encodeURIComponent(searchValue.trim())}`);
     }
@@ -94,9 +95,9 @@ function Header() {
       {/* Top Header Row */}
       <div className="header-top">
         <Link to="/" className="brand-logo">
-          B&B Books
+          Bán Sách
         </Link>
-        
+
         <div className="search-bar-container" ref={searchRef}>
           <form onSubmit={handleSearch}>
             <input
@@ -147,8 +148,8 @@ function Header() {
             <FaShoppingCart size={20} />
             <span className="cart-badge">{cartCount}</span>
           </Link>
-          <div 
-            className="action-icon-wrapper" 
+          <div
+            className="action-icon-wrapper"
             title="Tài khoản"
             onClick={() => setShowAccount(true)}
           >
@@ -165,7 +166,7 @@ function Header() {
             <Nav className="me-auto main-nav">
               <Nav.Link as={Link} to="/" className="nav-link-custom">Trang chủ</Nav.Link>
               <Nav.Link as={Link} to="/category" className="nav-link-custom">Danh mục</Nav.Link>
-              
+
               <NavDropdown title="Thể loại" id="basic-nav-dropdown" className="category-dropdown">
                 <NavDropdown.Item as={Link} to="/category/sach-mam-non">Sách mầm non</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/category/sach-thieu-nhi">Sách thiếu nhi</NavDropdown.Item>
@@ -179,9 +180,9 @@ function Header() {
                 <NavDropdown.Item as={Link} to="/category/truyen">Truyện</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/category/manga">Manga</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item as={Link} to="/category/top-best-seller" style={{color: '#ff6b6b', fontWeight: '600'}}>Top best seller</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/category/sach-moi" style={{color: '#20c997', fontWeight: '600'}}>Sách mới</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/category/sach-sap-phat-hanh" style={{color: '#339af0', fontWeight: '600'}}>Sách sắp phát hành</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/category/top-best-seller" style={{ color: '#ff6b6b', fontWeight: '600' }}>Top best seller</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/category/sach-moi" style={{ color: '#20c997', fontWeight: '600' }}>Sách mới</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/category/sach-sap-phat-hanh" style={{ color: '#339af0', fontWeight: '600' }}>Sách sắp phát hành</NavDropdown.Item>
               </NavDropdown>
 
               {/* Extras links if needed in future */}
@@ -199,19 +200,19 @@ function Header() {
               <span>Tính Năng Tài Khoản</span>
               <FaTimes className="close-btn" onClick={() => setShowAccount(false)} />
             </div>
-            <div className="custom-modal-body" style={{padding: '10px 0'}}>
-              <div className="dropdown-item" style={{padding: '12px 20px', cursor: 'pointer', borderBottom: '1px solid var(--border-color, #eee)'}} onClick={() => { setShowAccount(false); setShowLogin(true); }}>
-                <FaUser style={{marginRight: 10, color: '#007bff'}}/> Đăng nhập
+            <div className="custom-modal-body" style={{ padding: '10px 0' }}>
+              <div className="dropdown-item" style={{ padding: '12px 20px', cursor: 'pointer', borderBottom: '1px solid var(--border-color, #eee)' }} onClick={() => { setShowAccount(false); setShowLogin(true); }}>
+                <FaUser style={{ marginRight: 10, color: '#007bff' }} /> Đăng nhập
               </div>
-              <div className="dropdown-item" style={{padding: '12px 20px', cursor: 'pointer', borderBottom: '1px solid var(--border-color, #eee)'}} onClick={() => { setShowAccount(false); setShowSignUp(true); }}>
-                <FaUser style={{marginRight: 10, color: '#28a745'}}/> Đăng ký
+              <div className="dropdown-item" style={{ padding: '12px 20px', cursor: 'pointer', borderBottom: '1px solid var(--border-color, #eee)' }} onClick={() => { setShowAccount(false); setShowSignUp(true); }}>
+                <FaUser style={{ marginRight: 10, color: '#28a745' }} /> Đăng ký
               </div>
-              <div 
-                className="dropdown-item" 
-                style={{padding: '12px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center'}} 
+              <div
+                className="dropdown-item"
+                style={{ padding: '12px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
                 onClick={() => { setIsDarkMode(!isDarkMode); setShowAccount(false); }}
               >
-                {isDarkMode ? <FaSun style={{marginRight: 10, color: '#f39c12'}}/> : <FaMoon style={{marginRight: 10, color: '#666'}}/>}
+                {isDarkMode ? <FaSun style={{ marginRight: 10, color: '#f39c12' }} /> : <FaMoon style={{ marginRight: 10, color: '#666' }} />}
                 {isDarkMode ? 'Giao diện sáng' : 'Giao diện tối'}
               </div>
             </div>
@@ -246,6 +247,20 @@ function Header() {
                 className="modal-btn modal-btn-primary"
                 onClick={async () => {
                   try {
+                    // Kiểm tra tài khoản admin local trước
+                    const adminUser = dbData.users?.find(
+                      (u) => u.email === email && u.password === password && u.role === 'admin'
+                    );
+                    if (adminUser) {
+                      localStorage.setItem('adminSession', JSON.stringify({ id: adminUser.id, name: adminUser.name, email: adminUser.email }));
+                      setShowLogin(false);
+                      setEmail('');
+                      setPassword('');
+                      setError('');
+                      navigate('/admin/dashboard');
+                      return;
+                    }
+                    // Nếu không phải admin, đăng nhập Firebase bình thường
                     await signInWithEmailAndPassword(auth, email, password);
                     setShowLogin(false);
                     setEmail('');

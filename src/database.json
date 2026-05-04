@@ -732,5 +732,14 @@
       "image": "/images/banners/banner2.jpg",
       "link": "/category/sach-moi"
     }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin",
+      "email": "admin@bookstore.vn",
+      "password": "admin123",
+      "role": "admin"
+    }
   ]
 }

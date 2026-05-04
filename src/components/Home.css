@@ -305,9 +305,17 @@
   cursor: pointer;
   z-index: 2;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  transition: all 0.2s;
+  transition: opacity 0.25s ease, background-color 0.2s, color 0.2s;
   font-size: 18px;
   color: #00a650;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Hiện mũi tên khi di chuột vào slider */
+.slider-wrapper:hover .slider-arrow {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .slider-arrow:hover {
