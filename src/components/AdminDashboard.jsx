@@ -3,15 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import dbData from '../database.json';
 import './Admin.css';
 
-// ==================== Khởi tạo dữ liệu từ localStorage hoặc database.json ====================
-const initBooks = () => {
-  const stored = localStorage.getItem('adminBooks');
-  return stored ? JSON.parse(stored) : dbData.books;
-};
+// ==================== API helpers ====================
+const API = 'http://localhost:3001/api';
 
-const saveBooks = (books) => {
-  localStorage.setItem('adminBooks', JSON.stringify(books));
-};
+// Sync localStorage để bookStore.js đọc được ngay (không cần reload)
+const syncLocal = (books) => localStorage.setItem('adminBooks', JSON.stringify(books));
 
 // ==================== Modal Thêm / Sửa Sản Phẩm ====================
 const EMPTY_FORM = {
@@ -186,7 +182,8 @@ function ProductModal({ book, onClose, onSave, categories, publishers }) {
 // ==================== Dashboard chính ====================
 function AdminDashboard() {
   const navigate = useNavigate();
-  const [books, setBooks] = useState(initBooks());
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filterCat, setFilterCat] = useState('all');
   const [showModal, setShowModal] = useState(false);
@@ -199,10 +196,22 @@ function AdminDashboard() {
     if (!session) navigate('/');
   }, [session, navigate]);
 
-  // Lưu khi danh sách sách thay đổi
+  // Lấy sách từ API (và fallback sang localStorage nếu server chưa chạy)
   useEffect(() => {
-    saveBooks(books);
-  }, [books]);
+    fetch(`${API}/books`)
+      .then(r => r.json())
+      .then(data => {
+        setBooks(data);
+        syncLocal(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        // Server chưa chạy — dùng localStorage/database.json
+        const stored = localStorage.getItem('adminBooks');
+        setBooks(stored ? JSON.parse(stored) : dbData.books);
+        setLoading(false);
+      });
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('adminSession');
@@ -217,20 +226,59 @@ function AdminDashboard() {
     return matchSearch && matchCat;
   });
 
-  const handleSave = (bookData) => {
-    if (editBook) {
-      setBooks(prev => prev.map(b => b.id === bookData.id ? bookData : b));
-    } else {
-      setBooks(prev => [...prev, bookData]);
+  const handleSave = async (bookData) => {
+    try {
+      if (editBook) {
+        // Cập nhật sách
+        const res = await fetch(`${API}/books/${bookData.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(bookData),
+        });
+        const updated = await res.json();
+        const newBooks = books.map(b => b.id === updated.id ? updated : b);
+        setBooks(newBooks);
+        syncLocal(newBooks);
+      } else {
+        // Thêm sách mới
+        const res = await fetch(`${API}/books`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(bookData),
+        });
+        const created = await res.json();
+        const newBooks = [...books, created];
+        setBooks(newBooks);
+        syncLocal(newBooks);
+      }
+    } catch {
+      // Fallback: chỉ cập nhật state và localStorage nếu server không chạy
+      if (editBook) {
+        const newBooks = books.map(b => b.id === bookData.id ? bookData : b);
+        setBooks(newBooks);
+        syncLocal(newBooks);
+      } else {
+        const newId = books.length > 0 ? Math.max(...books.map(b => b.id)) + 1 : 1;
+        const newBooks = [...books, { ...bookData, id: newId }];
+        setBooks(newBooks);
+        syncLocal(newBooks);
+      }
     }
     setShowModal(false);
     setEditBook(null);
   };
 
-  const handleDelete = (id) => {
-    setBooks(prev => prev.filter(b => b.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await fetch(`${API}/books/${id}`, { method: 'DELETE' });
+    } catch { /* fallback */ }
+    const newBooks = books.filter(b => b.id !== id);
+    setBooks(newBooks);
+    syncLocal(newBooks);
     setDeleteConfirm(null);
   };
+
+  if (loading) return <div style={{ textAlign: 'center', padding: '80px', fontSize: '18px' }}>⏳ Đang tải dữ liệu...</div>;
 
   const openAdd = () => { setEditBook(null); setShowModal(true); };
   const openEdit = (book) => { setEditBook(book); setShowModal(true); };
