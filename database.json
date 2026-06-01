@@ -1,0 +1,292 @@
+{
+  "category": {
+    "sach_mam_non": [
+      {
+        "name": "Bé Làm Quen Với Chữ Cái",
+        "author": "Nhiều tác giả",
+        "publisher": "NXB Kim Đồng",
+        "year": 2023,
+        "original_price": 55000,
+        "discount": 18,
+        "quantity": 50,
+        "image": "https://bizweb.dktcdn.net/100/418/570/products/be-lam-quen-voi-chu-cai-5-6t-q2.jpg?v=1617855298357",
+        "description": "Giúp bé nhận diện mặt chữ và phát âm chuẩn từ nhỏ.",
+        "price": 45100,
+        "id": 101
+      },
+      {
+        "name": "Thế Giới Động Vật Quanh Em",
+        "author": "Minh Trí",
+        "publisher": "NXB Trẻ",
+        "year": 2024,
+        "original_price": 85000,
+        "discount": 20,
+        "quantity": 30,
+        "image": "https://dinhtibooks.com.vn/images/products/large/2d_nhung_loai_vat_quanh_em_2faeb90b79fe4b72baa9543f178bd527.webp",
+        "description": "Hình ảnh sinh động về các loài vật dành cho trẻ mầm non.",
+        "price": 68000,
+        "id": 102
+      }
+    ],
+    "sach_thieu_nhi": [
+      {
+        "name": "Dế Mèn Phiêu Lưu Ký",
+        "author": "Tô Hoài",
+        "publisher": "NXB Kim Đồng",
+        "year": 2022,
+        "original_price": 95000,
+        "discount": 21,
+        "quantity": 45,
+        "image": "https://lh4.googleusercontent.com/proxy/sGzQRruxLVpyc8Y0pnaZNiZnXyKtOniAsszYem00yo3PRcaZCRkCVqUWYcJKKtbZmQcNaO_E7UJ7fLkL5XReHpCxqLpDqGAz_bj_D-KFpY8Xlc7Bl5ITr76OECvifxMOpQmd8U7KCZTfsSFtS44",
+        "description": "Tác phẩm kinh điển về chú Dế Mèn dũng cảm và những bài học cuộc sống.",
+        "price": 75050,
+        "id": 201
+      }
+    ],
+    "sach_ki_nang": [
+      {
+        "name": "Đắc Nhân Tâm",
+        "author": "Dale Carnegie",
+        "publisher": "NXB Tổng Hợp",
+        "year": 2020,
+        "original_price": 110000,
+        "discount": 25,
+        "quantity": 100,
+        "image": "https://cdn1.fahasa.com/media/flashmagazine/images/page_images/dac_nhan_tam/2024_06_10_11_08_00_1-390x510.jpg",
+        "description": "Cuốn sách nghệ thuật ứng xử hàng đầu thế giới.",
+        "id": 301,
+        "price": 82500
+      },
+      {
+        "name": "Biến Đam Mê Thành Sự Nghiệp",
+        "author": "Triệu Sa",
+        "publisher": "Hồng Đức",
+        "year": 2025,
+        "original_price": 110000,
+        "discount": 20,
+        "quantity": 200,
+        "image": "https://cdn.hstatic.net/products/1000237375/thi_t_k__ch_a_c__t_n__20__ec4ee5006e844efa9b56d7dda4729d60_master.png",
+        "description": "",
+        "id": 1779435455636,
+        "price": 88000
+      },
+      {
+        "name": "Tự Do Là Chính Mình",
+        "author": "Sọa Bạch",
+        "publisher": "NXB Văn Học",
+        "year": 2023,
+        "original_price": 140000,
+        "discount": 20,
+        "quantity": 200,
+        "image": "https://cdn.hstatic.net/products/1000237375/b_a_tr__c_67e15167d85247d0b6f17b9081dabaea_master.png",
+        "description": "",
+        "id": 1779435876572,
+        "price": 112000
+      }
+    ],
+    "sach_kinh_doanh": [
+      {
+        "name": "Cha Giàu Cha Nghèo",
+        "author": "Robert Kiyosaki",
+        "publisher": "NXB Trẻ",
+        "year": 2023,
+        "original_price": 150000,
+        "discount": 16,
+        "quantity": 60,
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwL4HD5ptv-CAp_a8IEaFtUWP1XXnt8pYXnQ&s",
+        "description": "Bài học về tư duy tài chính và cách làm giàu bền vững.",
+        "price": 126000,
+        "id": 401
+      },
+      {
+        "name": "Doremon",
+        "author": "Fujimoto",
+        "publisher": "NXB Kim Đồng",
+        "year": 1999,
+        "original_price": 20000,
+        "discount": 20,
+        "quantity": 4,
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNOHsWXi6giC34hAoF6OzqWH7jK7T62FCGQw&s",
+        "description": "Hành động cực mạnh",
+        "id": 1778831089584,
+        "price": 16000
+      }
+    ],
+    "sach_me_va_be": [
+      {
+        "name": "Nuôi Con Không Phải Là Cuộc Chiến",
+        "author": "Nhiều tác giả",
+        "publisher": "NXB Lao Động",
+        "year": 2022,
+        "original_price": 180000,
+        "discount": 19,
+        "quantity": 40,
+        "image": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSxzqNX-zd7jdJlVcP4aZe3TSv9n6J_6F-5inPZKRLaU7hau-P6ZoCIF8uZN6-trCQbEVYlDB0PWmpiVBlbwwQShOEh0vW8CF7F_tPJb3_0srT5yiqAo5p_gUnmjmz3cG3b9HLWsW0&usqp=CAc",
+        "description": "Cẩm nang nuôi dạy trẻ khoa học và nhàn hạ.",
+        "price": 145800,
+        "id": 501
+      }
+    ],
+    "sach_van_hoc": [
+      {
+        "name": "Mắt Biếc",
+        "author": "Nguyễn Nhật Ánh",
+        "publisher": "NXB Trẻ",
+        "year": 2023,
+        "original_price": 120000,
+        "discount": 20,
+        "quantity": 75,
+        "image": "https://upload.wikimedia.org/wikipedia/vi/9/92/Mat_Biec.gif",
+        "description": "Câu chuyện tình yêu nhẹ nhàng và day dứt của Ngạn và Hà Lan.",
+        "id": 601,
+        "price": 96000
+      }
+    ],
+    "sach_tham_khao": [
+      {
+        "name": "Từ Điển Anh - Việt",
+        "author": "Viện Ngôn Ngữ",
+        "publisher": "NXB Giáo Dục",
+        "year": 2021,
+        "original_price": 300000,
+        "discount": 16,
+        "quantity": 20,
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTecLNZxwCt0W1nD5aYrpYqogFgBeTvl7H_rA&s",
+        "description": "Công cụ tra cứu ngôn ngữ đầy đủ và chính xác nhất.",
+        "price": 252000,
+        "id": 701
+      }
+    ],
+    "notebook": [
+      {
+        "name": "Sổ Tay Vintage Bìa Da",
+        "author": "Muji Style",
+        "publisher": "Nội địa",
+        "year": 2024,
+        "original_price": 150000,
+        "discount": 20,
+        "quantity": 80,
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4KqwOKq8kl6KwOq6kxYsmr3clB5HosAu6fQ&s",
+        "description": "Sổ tay cao cấp với giấy chống lóa, phong cách cổ điển.",
+        "price": 120000,
+        "id": 801
+      }
+    ],
+    "top_best_seller": [
+      {
+        "name": "Mắt Biếc",
+        "author": "Nguyễn Nhật Ánh",
+        "publisher": "NXB Trẻ",
+        "year": 2023,
+        "original_price": 120000,
+        "discount": 20,
+        "quantity": 75,
+        "image": "https://upload.wikimedia.org/wikipedia/vi/9/92/Mat_Biec.gif",
+        "description": "Câu chuyện tình yêu nhẹ nhàng và day dứt của Ngạn và Hà Lan.",
+        "id": 601,
+        "price": 96000
+      },
+      {
+        "name": "Đắc Nhân Tâm",
+        "author": "Dale Carnegie",
+        "publisher": "NXB Tổng Hợp",
+        "year": 2020,
+        "original_price": 110000,
+        "discount": 25,
+        "quantity": 100,
+        "image": "https://cdn1.fahasa.com/media/flashmagazine/images/page_images/dac_nhan_tam/2024_06_10_11_08_00_1-390x510.jpg",
+        "description": "Cuốn sách nghệ thuật ứng xử hàng đầu thế giới.",
+        "id": 301,
+        "price": 82500
+      }
+    ],
+    "sach_moi": [
+      {
+        "name": "Kỷ Nguyên AI",
+        "author": "Sam Altman",
+        "publisher": "NXB Thế Giới",
+        "year": 2024,
+        "original_price": 250000,
+        "discount": 16,
+        "quantity": 25,
+        "image": "https://cdn1.fahasa.com/media/catalog/product/b/_/b_a_1_k_nguy_n_ai_-_k_nguy_n_th_nh_v_ng.jpg",
+        "description": "Cái nhìn sâu sắc về tương lai của trí tuệ nhân tạo.",
+        "price": 210000,
+        "id": 901
+      }
+    ],
+    "sach_sap_phat_hanh": [
+      {
+        "name": "Hành Tinh Xanh Của Chúng Ta",
+        "author": "David Attenborough",
+        "publisher": "NXB Khoa Học",
+        "year": 2025,
+        "original_price": 320000,
+        "discount": 0,
+        "quantity": 0,
+        "image": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcStn9ZRsptPuNHTzOZC7RJ8mnxzBKF8SmdRWgjzK2TNdbi1xQld3f4W-EyXRYGLaFb9bSJaPv-jqUvqpOlFBI0nNtgR1gwkAS22cVbspj8S&usqp=CAc",
+        "description": "Khám phá vẻ đẹp kỳ thú của thiên nhiên hoang dã.",
+        "price": 320000,
+        "id": 1001
+      }
+    ]
+  },
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "admin123",
+      "role": "admin",
+      "fullName": "Administrator"
+    },
+    {
+      "username": "q1111",
+      "password": "12345",
+      "role": "user",
+      "fullName": "q1111",
+      "id": "3ovjUzE"
+    }
+  ],
+  "orders": [
+    {
+      "id": "c5Tpj6ReHn0",
+      "date": "14:56:40 12/5/2026",
+      "customerName": "Khách hàng vãng lai",
+      "address": "123 Đường ABC, Quận XYZ, TP.HCM",
+      "phone": "0901234567",
+      "items": [
+        {
+          "name": "Mắt Biếc",
+          "author": "Nguyễn Nhật Ánh",
+          "publisher": "NXB Trẻ",
+          "year": 2023,
+          "original_price": 120000,
+          "discount": 20,
+          "quantity": 75,
+          "image": "https://upload.wikimedia.org/wikipedia/vi/9/92/Mat_Biec.gif",
+          "description": "Câu chuyện tình yêu nhẹ nhàng và day dứt của Ngạn và Hà Lan.",
+          "id": 601,
+          "price": 96000,
+          "cartQuantity": 2
+        },
+        {
+          "name": "Dế Mèn Phiêu Lưu Ký",
+          "author": "Tô Hoài",
+          "publisher": "NXB Kim Đồng",
+          "year": 2022,
+          "original_price": 95000,
+          "discount": 21,
+          "quantity": 45,
+          "image": "https://lh4.googleusercontent.com/proxy/sGzQRruxLVpyc8Y0pnaZNiZnXyKtOniAsszYem00yo3PRcaZCRkCVqUWYcJKKtbZmQcNaO_E7UJ7fLkL5XReHpCxqLpDqGAz_bj_D-KFpY8Xlc7Bl5ITr76OECvifxMOpQmd8U7KCZTfsSFtS44",
+          "description": "Tác phẩm kinh điển về chú Dế Mèn dũng cảm và những bài học cuộc sống.",
+          "price": 75050,
+          "id": 201,
+          "cartQuantity": 1
+        }
+      ],
+      "total": 297050,
+      "status": "pending"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
